@@ -28,7 +28,7 @@ export default function LogIn({navigation}) {
             "password": password,
             "returnSecureToken": true
         }
-        axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDesU1w8wTTq4ErpwucFt4xrAOHzZH0djI",params)
+        axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBGB-OZeGVtIXJfmD1HYeJ1s9vUNEj18Tc",params)
         .then(function(response){
             console.log(response.data.localId)
             let token = response.data['localId']

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Button, TextInput, Image } from 'react-native';
+import { StyleSheet, View, Button, TextInput, Image, Text } from 'react-native';
 import logo from '../assets/logo.png'
 import { AuthContext } from '../context'
 import Loading from './Loading';
@@ -19,7 +19,7 @@ export default function LogIn({ navigation }) {
             "password": password,
             "returnSecureToken": true
         }
-        axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDesU1w8wTTq4ErpwucFt4xrAOHzZH0djI",params)
+        axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGB-OZeGVtIXJfmD1HYeJ1s9vUNEj18Tc",params)
         .then(function(response){
             let token = response.data['localId']
             console.log(token)
@@ -48,7 +48,7 @@ export default function LogIn({ navigation }) {
 
             <View style={styles.container}>
                 <Image style={styles.stretch} source={logo} />
-
+                <Text>Administrativo</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setEmail}

@@ -96,20 +96,6 @@ export default function App() {
       <NavigationContainer>
         {loginState.token !== null ? (
           <Tab.Navigator>
-            <Tab.Screen name="Restaurants" component={Restaurants} options={{
-              title: "Restaurantes",
-              tabBarShowLabel: false,
-              tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="restaurant" color={"black"} size={size} />
-              ),
-            }} />
-            <Tab.Screen name="Payments" component={Payments} options={{
-              title: "Pagos",
-              tabBarShowLabel: false,
-              tabBarIcon: ({ color, size }) => (
-                <FontAwesome name="money" color={"black"} size={size} />
-              ),
-            }} />
             <Tab.Screen name="Profile" component={Profile} options={{
               title: "Perfil",
               tabBarShowLabel: false,
@@ -123,7 +109,7 @@ export default function App() {
           <Stack.Navigator initialRouteName="LogIn">
             <Stack.Screen name="LogIn" component={LogIn}
               initialParams={{ setLoggedIn: 42 }}
-              options={{ title: 'Press2Eat' }} />
+              options={{ title: 'Press2EatAdmin' }} />
             <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Crear cuenta' }} />
           </Stack.Navigator>
         }
