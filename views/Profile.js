@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context'
 
-
 export default function Profile({ navigation }) {
     const [token, setToken] = React.useState("")
     const { logOut } = React.useContext(AuthContext);
@@ -24,9 +23,45 @@ export default function Profile({ navigation }) {
 
         <View style={styles.container}>
 
-            <Text>{token}</Text>
+            {/* <Text>{token}</Text> */}
             <Button
-                onPress={() => {  logOut()}}
+                onPress={() => {navigation.navigate('Info') }}
+                title="Info restaurante"
+                color="#333"
+                accessibilityLabel="Información del restaurante"
+                style={styles.wideButton}
+            />
+            <View
+                style={{
+                    marginBottom: 10
+                }}
+            />
+            <Button
+                onPress={() => { navigation.navigate('Menu')}}
+                title="Menu"
+                color="#000"
+                accessibilityLabel="Menú del restaurante"
+                style={styles.wideButton}
+            />
+            <View
+                style={{
+                    marginBottom: 20,
+                }}
+            />
+            <Button
+                onPress={() => { navigation.navigate('Bank')}}
+                title="Cuenta de banco"
+                color="#333"
+                accessibilityLabel="Cuenta de banco"
+                style={styles.wideButton}
+            />
+            <View
+                style={{
+                    marginBottom: 70,
+                }}
+            />
+            <Button
+                onPress={() => { logOut() }}
                 title="Cerrar sesión"
                 color="red"
                 accessibilityLabel="Cerrar sesión"
@@ -38,11 +73,9 @@ export default function Profile({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: "column",
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20
-    }
+
+        marginTop: 20
+    },
+
 
 });

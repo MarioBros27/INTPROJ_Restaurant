@@ -1,0 +1,25 @@
+import React from 'react';
+import Profile from './Profile'
+import RestInfo from './RestInfo'
+import RestBank from './RestBank';
+import RestMenu from './RestMenu';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+export default function ProfileNavigator({ navigation }) {
+
+
+    const Stack = createNativeStackNavigator();
+
+
+    return (
+        <Stack.Navigator initialRouteName="Profile" >
+            <Stack.Screen name="Info" options={{title:"Información"}} component={RestInfo} />
+            <Stack.Screen name="Bank" options={{title:"Cuenta Bancaria"}} component={RestBank} />
+            <Stack.Screen name="Menu" options={{title:"Menú"}} component={RestMenu} />
+            <Stack.Screen name="Profile" options={{title:"Perfil"}}component={Profile} />
+        </Stack.Navigator>
+    );
+}
+
+
+
