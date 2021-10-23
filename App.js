@@ -9,7 +9,7 @@ import ProfileNavigator from './views/ProfileNavigator';
 import Loading from './views/Loading'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import ReservacionNavigator from './views/ReservacionNavigator';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './context';
@@ -112,8 +112,9 @@ export default function App() {
                 <MaterialCommunityIcons name="table-chair" color={"black"} size={size} />
               )
             }} />
-            <Tab.Screen name="Reservaciones" component={Reservaciones} options={{
+            <Tab.Screen name="ReservacionesNavigator" component={ReservacionNavigator} options={{
               title: "Reservaciones",
+              headerShown:false,
               tabBarShowLabel: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="format-list-checkbox" color={"black"} size={size} />

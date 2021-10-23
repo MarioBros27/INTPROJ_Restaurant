@@ -65,7 +65,7 @@ export default function Pagos({ navigation }) {
             <Text style={styles.subtitle}>Hora de pago: {item.hora}</Text>
             <Text style={styles.subtitle}>Total: ${item.total}</Text>
             <Text style={styles.subtitle}>Propina: ${item.propina}</Text>
-            <Text style={styles.subtitle}>Referencia: ${item.referencia}</Text>
+            <Text style={styles.subtitle}>Referencia: {item.referencia}</Text>
         </View>
     );
 
