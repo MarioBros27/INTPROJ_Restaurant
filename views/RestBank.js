@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 export default function RestBank({navigation}) {
+    const [clabe, setClabe] = React.useState("")
      return (
 
         <View style={styles.container}>

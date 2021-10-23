@@ -100,7 +100,11 @@ export default function App() {
       <NavigationContainer>
         {loginState.token !== null ? (
           
-          <Tab.Navigator>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarHideOnKeyboard: true
+            }}
+          >
             <Tab.Screen name="Mesas" component={Mesas} options={{
               title: "Mesas",
               tabBarShowLabel: false,
