@@ -51,7 +51,9 @@ export default function RestMenu({ navigation }) {
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-
+                        navigation.navigate("Item",{
+                            item:null
+                        })
                     }}
                     title="Agregar al menú"
                     color="green"

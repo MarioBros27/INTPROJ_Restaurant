@@ -3,11 +3,24 @@ import { StyleSheet, View, Text, ScrollView, Button, TextInput } from 'react-nat
 
 export default function RestMenu({ route, navigation }) {
     const { item } = route.params;
-    const [name, setName] = React.useState(item.nombre)
+    // const [name, setName] = React.useState(item.nombre)
+    // // const [brand, setBrand] = React.useState("")
+    // // const [type, setType] = React.useState("")
+    // const [price, setPrice] = React.useState(item.precio)
+    // const [desc, setDesc] = React.useState(item.descripcion)
+
+    const [name, setName] = React.useState("")
     // const [brand, setBrand] = React.useState("")
     // const [type, setType] = React.useState("")
-    const [price, setPrice] = React.useState(item.precio)
-    const [desc, setDesc] = React.useState(item.descripcion)
+    const [price, setPrice] = React.useState("")
+    const [desc, setDesc] = React.useState("")
+    React.useEffect(() => {
+        if (item) {
+            setName(item.nombre)
+            setPrice(item.precio)
+            setDesc(item.descripcion)
+        }
+    }, [])
 
     return (
 
@@ -77,13 +90,13 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#fff"
     },
-    longInput:{
+    longInput: {
         width: "100%",
         margin: 12,
         borderWidth: 1,
         padding: 10,
         backgroundColor: "#fff"
-        
+
     },
     buttonContainer: {
         marginBottom: 20
