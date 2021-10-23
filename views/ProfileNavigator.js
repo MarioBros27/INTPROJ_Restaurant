@@ -3,6 +3,7 @@ import Profile from './Profile'
 import RestInfo from './RestInfo'
 import RestBank from './RestBank';
 import RestMenu from './RestMenu';
+import RestItem from './RestItem'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ProfileNavigator({ navigation }) {
@@ -17,6 +18,7 @@ export default function ProfileNavigator({ navigation }) {
             <Stack.Screen name="Bank" options={{title:"Cuenta Bancaria"}} component={RestBank} />
             <Stack.Screen name="Menu" options={{title:"Menú"}} component={RestMenu} />
             <Stack.Screen name="Profile" options={{title:"Perfil"}}component={Profile} />
+            <Stack.Screen name="Item" options={{title:""}}component={RestItem} />
         </Stack.Navigator>
     );
 }

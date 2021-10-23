@@ -1,25 +1,47 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
 
-export default function RestBank({navigation}) {
+export default function RestBank({ navigation }) {
     const [clabe, setClabe] = React.useState("")
-     return (
 
-        <View style={styles.container}>
-           
-            <Text>Hello Template</Text>
-        </View>
+    return (
+        <ScrollView>
+            <View style={styles.container}>
+                <Text style={styles.label}>CLABE Interbancaria</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setClabe}
+                    value={clabe}
+                />
+                <Button
+                    onPress={() => {
 
+                    }}
+                    title="Guardar cambios"
+                    color="green"
+                    accessibilityLabel="Guardar cambios"
+                />
+            </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: "column",
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20
+    },
+    label: {
+        fontWeight: "bold"
+    },
+    input: {
+        width: "100%",
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        backgroundColor: "#fff"
     }
 
 });

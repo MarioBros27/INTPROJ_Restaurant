@@ -12,73 +12,73 @@ export default function RestInfo({ navigation }) {
     const [phone1, setPhone1] = React.useState("")
     const [phone2, setPhone2] = React.useState("")
 
-
     return (
-<ScrollView>
-        <View style={styles.container}>
-            <Text style={styles.label}>Nombre del restaurante</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setName}
-                value={name}
-            />
-            <Text style={styles.label}>Calle</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setStreet}
-                value={street}
-            />
-            <Text style={styles.label}>Número exterior</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setNumExt}
-                value={numExt}
-            />
-            <Text style={styles.label}>Número interior</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setNumInt}
-                value={numInt}
-            />
-            <Text style={styles.label}>Colonia</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setColonia}
-                value={colonia}
-            />
-            <Text style={styles.label}>Ciudad</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setCity}
-                value={city}
-            />
-            <Text style={styles.label}>Estado</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setState}
-                value={state}
-            />
-            <Text style={styles.label}>Teléfono 1</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setPhone1}
-                value={phone1}
-            />
-            <Text style={styles.label}>Teléfono 2</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setPhone2}
-                value={phone2}
-            />
-            <Button
-                onPress={() => {
-                    
-                }}
-                title="Guardar cambios"
-                color="green"
-                accessibilityLabel="Guardar cambios"
-            />
-        </View>
+        <ScrollView>
+            <View style={styles.container}>
+                <Text style={styles.label}>Nombre del restaurante</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setName}
+                    value={name}
+                />
+                <Text style={styles.label}>Calle</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setStreet}
+                    value={street}
+                />
+                <Text style={styles.label}>Número exterior</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setNumExt}
+                    value={numExt}
+                />
+                <Text style={styles.label}>Número interior</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setNumInt}
+                    value={numInt}
+                />
+                <Text style={styles.label}>Colonia</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setColonia}
+                    value={colonia}
+                />
+                <Text style={styles.label}>Ciudad</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setCity}
+                    value={city}
+                />
+                <Text style={styles.label}>Estado</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setState}
+                    value={state}
+                />
+                <Text style={styles.label}>Teléfono 1</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPhone1}
+                    value={phone1}
+                />
+                <Text style={styles.label}>Teléfono 2</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPhone2}
+                    value={phone2}
+                />
+                <Button
+                    onPress={() => {
+
+                    }}
+                    title="Guardar cambios"
+                    color="green"
+                    accessibilityLabel="Guardar cambios"
+                />
+                
+            </View>
         </ScrollView>
     );
 }
