@@ -15,7 +15,7 @@ export default function Cliente({ route, navigation }) {
                 <Text style={styles.subtitleBold}>Pagado? Sí</Text>
 
             </View>
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
                         navigation.navigate("CodeForClient",{
@@ -26,14 +26,14 @@ export default function Cliente({ route, navigation }) {
                     color="black"
                 />
                 
-            </View>
+            </View> */}
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
                         alert("Pendiente")
                     }}
                     title="Terminado"
-                    color="blue"
+                    color="red"
                 />
                 
             </View>
