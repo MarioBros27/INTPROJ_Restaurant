@@ -11,9 +11,21 @@ export default function Cliente({ route, navigation }) {
                 <Text style={styles.title}>{item.nombre}</Text>
                 <Text style={styles.subtitle}>#Mesa: {item.mesa}</Text>
                 <Text style={styles.subtitle}>Total: {item.total}</Text>
-                <Text style={styles.subtitle}> {item.hora}</Text>
-                <Text style={styles.subtitleBold}> Pagado? Sí</Text>
+                <Text style={styles.subtitle}>{item.hora}</Text>
+                <Text style={styles.subtitleBold}>Pagado? Sí</Text>
 
+            </View>
+            <View style={styles.buttonContainer}>
+                <Button
+                    onPress={() => {
+                        navigation.navigate("CodeForClient",{
+                            id:item.id
+                        })
+                    }}
+                    title="Ver Codigo"
+                    color="black"
+                />
+                
             </View>
             <View style={styles.buttonContainer}>
                 <Button

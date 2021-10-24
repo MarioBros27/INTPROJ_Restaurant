@@ -9,6 +9,7 @@ import ProfileNavigator from './views/ProfileNavigator';
 import Loading from './views/Loading'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReservacionNavigator from './views/ReservacionNavigator';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
