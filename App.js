@@ -20,6 +20,7 @@ import Reservaciones from './views/Reservaciones';
 import Pagos from './views/Pagos'
 import OrdenesNavigator from './views/OrdenesNavigator';
 import Ordenes from './views/Ordenes'
+import ClientesNavigator from './views/ClientesNavigator';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -109,9 +110,10 @@ export default function App() {
               tabBarInactiveTintColor: "black"
             }}
           >
-            <Tab.Screen name="Clientes" component={Clientes} options={{
+            <Tab.Screen name="ClientesNavigator" component={ClientesNavigator} options={{
               title: "Clientes",
               tabBarShowLabel: false,
+              headerShown: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="table-chair" color={color} size={size} />
               )
