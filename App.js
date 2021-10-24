@@ -18,7 +18,7 @@ import axios from 'axios'
 import Clientes from './views/Clientes'
 import Reservaciones from './views/Reservaciones';
 import Pagos from './views/Pagos'
-
+import OrdenesNavigator from './views/OrdenesNavigator';
 import Ordenes from './views/Ordenes'
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -116,11 +116,13 @@ export default function App() {
                 <MaterialCommunityIcons name="table-chair" color={color} size={size} />
               )
             }} />
-            <Tab.Screen name="Ordenes" component={Ordenes}
+            <Tab.Screen name="OrdenesNavigator" component={OrdenesNavigator}
 
               options={{
                 title: "Ordenes",
                 tabBarShowLabel: false,
+                headerShown: false,
+
                 tabBarIcon: ({ color, size }) => (
                   <Ionicons name="fast-food" color={color} size={size} />
                 ),
