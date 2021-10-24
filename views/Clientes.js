@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-export default function Mesas({navigation}) {
+export default function Clientes({navigation}) {
      return (
 
         <View style={styles.container}>

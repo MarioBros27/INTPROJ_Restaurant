@@ -9,15 +9,17 @@ import ProfileNavigator from './views/ProfileNavigator';
 import Loading from './views/Loading'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReservacionNavigator from './views/ReservacionNavigator';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './context';
 import axios from 'axios'
-import Mesas from './views/Mesas'
-import Reservaciones  from './views/Reservaciones';
+import Clientes from './views/Clientes'
+import Reservaciones from './views/Reservaciones';
 import Pagos from './views/Pagos'
 
+import Ordenes from './views/Ordenes'
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +63,7 @@ export default function App() {
         console.log(e);
       }
       // console.log('user token: ', token);
-      dispatch({ type: 'LOGIN',  token: token });
+      dispatch({ type: 'LOGIN', token: token });
     },
     logOut: async () => {
       try {
@@ -71,7 +73,7 @@ export default function App() {
       }
       dispatch({ type: 'LOGOUT' });
     },
-    
+
 
   }), []);
 
@@ -85,7 +87,7 @@ export default function App() {
         console.log(e);
       }
       dispatch({ type: 'RETRIEVE_TOKEN', token: token });
-    },0)
+    }, 0)
   }, []);
   if (loginState.isLoading) {
     return (
@@ -99,43 +101,56 @@ export default function App() {
 
       <NavigationContainer>
         {loginState.token !== null ? (
-          
+
           <Tab.Navigator
             screenOptions={{
-              tabBarHideOnKeyboard: true
+              tabBarHideOnKeyboard: true,
+              tabBarActiveTintColor: "#fc6c27",
+              tabBarInactiveTintColor: "black"
             }}
           >
-            <Tab.Screen name="Mesas" component={Mesas} options={{
-              title: "Mesas",
+            <Tab.Screen name="Clientes" component={Clientes} options={{
+              title: "Clientes",
               tabBarShowLabel: false,
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="table-chair" color={"black"} size={size} />
+                <MaterialCommunityIcons name="table-chair" color={color} size={size} />
               )
             }} />
-            <Tab.Screen name="ReservacionesNavigator" component={ReservacionNavigator} options={{
-              title: "Reservaciones",
-              headerShown:false,
-              tabBarShowLabel: false,
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="format-list-checkbox" color={"black"} size={size} />
-              )
-            }} />
+            <Tab.Screen name="Ordenes" component={Ordenes}
+
+              options={{
+                title: "Ordenes",
+                tabBarShowLabel: false,
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="fast-food" color={color} size={size} />
+                ),
+
+              }} />
+
             <Tab.Screen name="Pagos" component={Pagos} options={{
               title: "Historial Pagos",
               tabBarShowLabel: false,
               tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="attach-money" color={"black"} size={size} />
+                <MaterialIcons name="attach-money" color={color} size={size} />
+              )
+            }} />
+            <Tab.Screen name="ReservacionesNavigator" component={ReservacionNavigator} options={{
+              title: "Reservaciones",
+              headerShown: false,
+              tabBarShowLabel: false,
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="format-list-checkbox" color={color} size={size} />
               )
             }} />
             <Tab.Screen name="ProfileNavigator" component={ProfileNavigator} options={{
               title: "Perfil",
               tabBarShowLabel: false,
-              headerShown:false,
+              headerShown: false,
               tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="person" color={"black"} size={size} />
+                <MaterialIcons name="person" color={color} size={size} />
               )
             }} />
-            
+
           </Tab.Navigator>
         )
           :
