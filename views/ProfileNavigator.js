@@ -15,7 +15,7 @@ export default function ProfileNavigator({ navigation }) {
     return (
         <Stack.Navigator initialRouteName="Profile" >
             <Stack.Screen name="Info" options={{title:"Información"}} component={RestInfo} />
-            <Stack.Screen name="Bank" options={{title:"Cuenta Bancaria"}} component={RestBank} />
+            <Stack.Screen name="Bank" options={{title:"Registrar para cobro digital"}} component={RestBank} />
             <Stack.Screen name="Menu" options={{title:"Menú"}} component={RestMenu} />
             <Stack.Screen name="Profile" options={{title:"Perfil"}}component={Profile} />
             <Stack.Screen name="Item" options={{title:""}}component={RestItem} />

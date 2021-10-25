@@ -50,9 +50,8 @@ export default function Profile({ navigation }) {
             />
             <Button
                 onPress={() => { navigation.navigate('Bank')}}
-                title="Cuenta de banco"
+                title="Registrarse para cobro digital"
                 color="#333"
-                accessibilityLabel="Cuenta de banco"
                 style={styles.wideButton}
             />
             <View

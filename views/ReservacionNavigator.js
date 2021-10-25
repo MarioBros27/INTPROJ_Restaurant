@@ -1,7 +1,6 @@
 import React from 'react';
 import Reservacion from './Reservacion';
 import Reservaciones from './Reservaciones'
-import RestItem from './RestItem'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ReservacionNavigator({ navigation }) {
