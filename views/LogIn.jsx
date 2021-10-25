@@ -48,7 +48,7 @@ export default function LogIn({ navigation }) {
 
             <View style={styles.container}>
                 <Image style={styles.stretch} source={logo} />
-                <Text>Administrativo</Text>
+                <Text style ={styles.title}>Restaurante</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setEmail}
@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
         padding: 20
     },
     title: {
-        marginBottom: "20%",
-        fontFamily: "Menlo",
-        fontSize: 200
+        // fontFamily: "Menlo",
+        fontSize: 20,
+        fontWeight: "bold"
     },
     stretch: {
         marginTop: '10%',
