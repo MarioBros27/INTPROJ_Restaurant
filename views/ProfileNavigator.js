@@ -4,6 +4,7 @@ import RestInfo from './RestInfo'
 import RestBank from './RestBank';
 import RestMenu from './RestMenu';
 import RestItem from './RestItem'
+import Browser from './Browser'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ProfileNavigator({ navigation }) {
