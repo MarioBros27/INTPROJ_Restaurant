@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontWeight: "bold"
     },
-    subtite: {
-        fontSize: 12
+    subtitle: {
+        fontSize: 14
     }
 
 });

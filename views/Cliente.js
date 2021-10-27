@@ -11,7 +11,7 @@ export default function Cliente({ route, navigation }) {
                 <Text style={styles.title}>{item.nombre}</Text>
                 <Text style={styles.subtitle}>#Mesa: {item.mesa}</Text>
                 <Text style={styles.subtitle}>Total: {item.total}</Text>
-                <Text style={styles.subtitle}>{item.hora}</Text>
+                <Text style={styles.subtitle}>Check-in: {item.hora}</Text>
                 <Text style={styles.subtitleBold}>Pagado? Sí</Text>
 
             </View>
@@ -44,15 +44,16 @@ export default function Cliente({ route, navigation }) {
 
 const styles = StyleSheet.create({
     parentContainer: {
-        flex: 1,
+        // flex: 1,
         flexDirection: "column",
-        alignItems: 'center',
-        justifyContent: 'center',
         padding: 20
     },
     infoContainer: {
-        flexDirection: "column",
-        padding: 0
+        backgroundColor: '#fff',
+        padding: 15,
+        borderColor: "#000",
+        borderWidth: 1,
+        borderRadius: 22
     },
     buttonContainer: {
         marginTop: 40
@@ -62,8 +63,8 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontWeight: "bold"
     },
-    subtite: {
-        fontSize: 27
+    subtitle: {
+        fontSize: 22
     },
     subtitleBold: {
         fontSize: 32,

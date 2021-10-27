@@ -3,7 +3,6 @@ import { StyleSheet, View, Text,Button } from 'react-native';
 
 export default function Reservacion({ route, navigation }) {
     const { item } = route.params;
-    console.log(item)
     return (
 
         <View style={styles.parentContainer}>
@@ -45,18 +44,16 @@ export default function Reservacion({ route, navigation }) {
 
 const styles = StyleSheet.create({
     parentContainer: {
-        flex: 1,
+        // flex: 1,
         flexDirection: "column",
-        alignItems: 'center',
-        justifyContent: 'center',
         padding: 20
     },
     infoContainer: {
-        // flex: 1,
-        flexDirection: "column",
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        padding: 0
+        backgroundColor: '#fff',
+        padding: 15,
+        borderColor: "#000",
+        borderWidth: 1,
+        borderRadius: 22
     },
     buttonContainer: {
         marginTop: 25
@@ -66,8 +63,8 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontWeight: "bold"
     },
-    subtite: {
-        fontSize: 12
+    subtitle: {
+        fontSize: 22
     }
 
 });

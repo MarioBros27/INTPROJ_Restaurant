@@ -59,26 +59,26 @@ export default function Orden({ route, navigation }) {
 
 const styles = StyleSheet.create({
     parentContainer: {
-        flex: 1,
         flexDirection: "column",
-        alignItems: 'center',
-        justifyContent: 'center',
         padding: 20
     },
     infoContainer: {
-        flexDirection: "column",
-        padding: 0
+        backgroundColor: '#fff',
+        padding: 15,
+        borderColor: "#000",
+        borderWidth: 1,
+        borderRadius: 22
     },
     buttonContainer: {
         marginTop: 25
     },
     title: {
-        fontSize: 24,
+        fontSize: 32,
         marginBottom: 2,
         fontWeight: "bold"
     },
-    subtite: {
-        fontSize: 12
+    subtitle: {
+        fontSize: 18
     }
 
 });
