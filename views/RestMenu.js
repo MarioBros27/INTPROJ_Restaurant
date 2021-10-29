@@ -1,43 +1,69 @@
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity } from 'react-native';
-const items = [
-    {
-        id: "0",
-        nombre: "hola",
-        precio: "25",
-        descripcion: "sahfiashiasjbfhdakjhkjash"
-    },
-    {
-        id: "1",
-        nombre: "hola",
-        precio: "25",
-        descripcion: "sahfiashiasjbfhdakjhkjash"
-    },
-    {
-        id: "2",
-        nombre: "hola",
-        precio: "25",
-        descripcion: "sahfiashiasjbfhdakjhkjash"
-    },
-    {
-        id: "3",
-        nombre: "hola",
-        precio: "25",
-        descripcion: "sahfiashiasjbfhdakjhkjash"
+import axios from 'axios';
+// const items = [
+//     {
+//         id: "0",
+//         nombre: "hola",
+//         precio: "25",
+//         descripcion: "sahfiashiasjbfhdakjhkjash"
+//     },
+//     {
+//         id: "1",
+//         nombre: "hola",
+//         precio: "25",
+//         descripcion: "sahfiashiasjbfhdakjhkjash"
+//     },
+//     {
+//         id: "2",
+//         nombre: "hola",
+//         precio: "25",
+//         descripcion: "sahfiashiasjbfhdakjhkjash"
+//     },
+//     {
+//         id: "3",
+//         nombre: "hola",
+//         precio: "25",
+//         descripcion: "sahfiashiasjbfhdakjhkjash"
+//     }
+// ]
+
+
+
+
+export default function RestMenu({ navigation, id }) {
+
+    const [items, setItems] = React.useState([])
+
+    const appSettings = require('../app-settings.json');
+
+    const fetchData = () => {
+        axios.get(`${appSettings['backend-host']}/restaurants/${id}/items`
+        )
+            .then(response => {
+
+                setItems(response["data"])
+            })
+            .catch(error => {
+                alert(`There was an error creating the restaurant. Error details: ${error}`)
+            })
     }
-]
+    React.useEffect(() => {
+        fetchData()
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            fetchData();
+        });
+    }, [])
 
-
-
-
-export default function RestMenu({ navigation }) {
     const Item = ({ item }) => (
-        <TouchableOpacity onPress={()=>{navigation.navigate("Item",{
-            item:item
-        })}}>
+        <TouchableOpacity onPress={() => {
+            navigation.navigate("Item", {
+                item: item
+            })
+        }}>
             <View style={styles.item}>
-                <Text style={styles.title}>{item.nombre}</Text>
-                <Text style={styles.subtitle}>${item.precio}</Text>
+                <Text style={styles.title}>{item.name}</Text>
+                <Text style={styles.subtitle}>${item.price}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -47,12 +73,14 @@ export default function RestMenu({ navigation }) {
     );
     return (
 
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+
             <View style={styles.buttonContainer}>
+
                 <Button
                     onPress={() => {
-                        navigation.navigate("Item",{
-                            item:null
+                        navigation.navigate("Item", {
+                            item: null
                         })
                     }}
                     title="Agregar al menú"
@@ -65,7 +93,7 @@ export default function RestMenu({ navigation }) {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
             />
-        </SafeAreaView>
+        </View>
 
     );
 }
@@ -92,8 +120,8 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontWeight: "bold"
     },
-    subtite: {
-        fontSize: 12
+    subtitle: {
+        fontSize: 16
     }
 
 });

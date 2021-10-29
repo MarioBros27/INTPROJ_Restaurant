@@ -28,7 +28,10 @@ export default function ProfileNavigator({ navigation,id }) {
                 }
             </Stack.Screen>
             <Stack.Screen name="Profile" options={{title:"Perfil"}}component={Profile} />
-            <Stack.Screen name="Item" options={{title:""}}component={RestItem} />
+            <Stack.Screen name="Item" options={{title:""}}  >
+                {(props)=>(<RestItem {...props} id={id}/>)
+                }
+            </Stack.Screen>
         </Stack.Navigator>
     );
 }

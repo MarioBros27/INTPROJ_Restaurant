@@ -1,27 +1,66 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Button, TextInput } from 'react-native';
-
-export default function RestMenu({ route, navigation }) {
+import axios
+    from 'axios';
+export default function RestItem({ route, navigation, id }) {
     const { item } = route.params;
-    // const [name, setName] = React.useState(item.nombre)
-    // // const [brand, setBrand] = React.useState("")
-    // // const [type, setType] = React.useState("")
-    // const [price, setPrice] = React.useState(item.precio)
-    // const [desc, setDesc] = React.useState(item.descripcion)
 
     const [name, setName] = React.useState("")
     // const [brand, setBrand] = React.useState("")
     // const [type, setType] = React.useState("")
     const [price, setPrice] = React.useState("")
     const [desc, setDesc] = React.useState("")
+    const [disableButton, setDisableButton] = React.useState(false)
+    const appSettings = require('../app-settings.json');
+
     React.useEffect(() => {
         if (item) {
-            setName(item.nombre)
-            setPrice(item.precio)
-            setDesc(item.descripcion)
+            setName(item.name)
+            setPrice(String(item.price))
+            setDesc(item.description)
         }
     }, [])
+    const submitChanges = () => {
+        if (name.length == 0 || price.length == 0) {
+            alert("Error: has dejado vacio campos importantes")
+            return;
+        }
+        setDisableButton(true)
+        if (item) {//If we are updating an item
+            axios.put(`${appSettings['backend-host']}/restaurants/${id}/items/${item.id}`, {
+                name: name,
+                description: desc,
+                price: price,
+                type: "mvp"
+            })
+                .then(response => {
+                    setDisableButton(false)
+                    alert("cambios guardados")
+                })
+                .catch(error => {
+                    setDisableButton(false)
+                    alert(`There was an error creating the restaurant. Error details: ${error}`)
+                })
+        } else {//If we are posting a new item
+            axios.post(`${appSettings['backend-host']}/restaurants/${id}/items/`, {
+                name: name,
+                description: desc,
+                price: price,
+                type: "mvp"
+            })
+                .then(response => {
+                    setDisableButton(false)
+                    alert("cambios guardados")
+                })
+                .catch(error => {
+                    setDisableButton(false)
+                    alert(`There was an error creating the restaurant. Error details: ${error}`)
+                })
+        }
+    }
+    const deleteItem = ()=>{
 
+    }
     return (
 
         <ScrollView>
@@ -51,21 +90,23 @@ export default function RestMenu({ route, navigation }) {
                 <View style={styles.buttonContainer}>
                     <Button
                         onPress={() => {
-                            alert("producto guardado")
+                            submitChanges()
                         }}
                         title="Guardar cambios"
                         color="green"
                         accessibilityLabel="Guardar cambios"
+                        disabled={disableButton}
                     />
                 </View>
-                <Button
+                {/* <Button
                     onPress={() => {
-                        alert("seguro borrar?")
+                        deleteItem()
                     }}
                     title="Borrar producto"
                     color="red"
                     accessibilityLabel="Borrar producto"
-                />
+                    disabled={disableButton}
+                /> */}
             </View>
         </ScrollView>
 
