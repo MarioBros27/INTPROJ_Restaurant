@@ -11,7 +11,14 @@ export default function RestInfo({ navigation }) {
     const [state, setState] = React.useState("")
     const [phone1, setPhone1] = React.useState("")
     const [phone2, setPhone2] = React.useState("")
+    const [desc, setDesc] = React.useState("")
 
+    const submitChanges = ()=>{
+        if (desc.length == 0|| name.length == 0 ||street.length == 0  || numExt.length == 0|| colonia.length == 0 ||city.length == 0  || state.length == 0) {
+            alert("Error: has dejado vacio campos importantes")
+            return;
+        }
+    }
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -20,6 +27,14 @@ export default function RestInfo({ navigation }) {
                     style={styles.input}
                     onChangeText={setName}
                     value={name}
+                />
+                <Text style={styles.label}>Descripción</Text>
+                <TextInput
+                    multiline
+                    numberOfLines={6}
+                    style={styles.longInput}
+                    onChangeText={setDesc}
+                    value={desc}
                 />
                 <Text style={styles.label}>Calle</Text>
                 <TextInput
@@ -99,6 +114,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         backgroundColor: "#fff"
-    }
+    },
+    longInput: {
+        width: "100%",
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        backgroundColor: "#fff"
+
+    },
 
 });

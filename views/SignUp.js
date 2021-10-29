@@ -1,15 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Button, TextInput, Image, ScrollView,Text } from 'react-native';
+import { StyleSheet, View, Button, TextInput, Image, ScrollView, Text } from 'react-native';
 import logo from '../assets/logo.png'
 import { AuthContext } from '../context'
 import Loading from './Loading';
 import axios from 'axios'
 
+const appSettings = require('../app-settings.json');
 
 export default function LogIn({ navigation }) {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [password2, setPassword2] = React.useState("")
+    const [desc, setDesc] = React.useState("")
 
     const [name, setName] = React.useState("")
     const [street, setStreet] = React.useState("")
@@ -20,9 +22,14 @@ export default function LogIn({ navigation }) {
     const [state, setState] = React.useState("")
     const [phone1, setPhone1] = React.useState("")
     const [phone2, setPhone2] = React.useState("")
+    const [disableButton, setDisableButton] = React.useState(false)
 
     const { logIn } = React.useContext(AuthContext);
     const handleSignUp = () => {
+        if (email.length == 0 || password.length == 0 || password2.length == 0 || desc.length == 0 || name.length == 0 || street.length == 0 || numExt.length == 0 || colonia.length == 0 || city.length == 0 || state.length == 0) {
+            alert("No has completado todos los campos")
+            return;
+        }
         if (password != password2) {
             alert("contraseñas no coinciden")
             return
@@ -30,7 +37,7 @@ export default function LogIn({ navigation }) {
         if (password.length < 6) {
             alert("contraseña corta. Por lo menos 6 caracteres")
         }
-        setLoading(true)
+        setDisableButton(true)
         const params = {
             "email": email,
             "password": password,
@@ -38,20 +45,41 @@ export default function LogIn({ navigation }) {
         }
         axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBGB-OZeGVtIXJfmD1HYeJ1s9vUNEj18Tc", params)
             .then(function (response) {
-                console.log(response.data.localId)
+
                 let token = response.data['localId']
-                logIn(token)
+                axios.post(`${appSettings['backend-host']}/restaurants`, {
+                    name: name,
+                    description: desc,
+                    street: street,
+                    externalNumber: numExt,
+                    suburb: colonia,
+                    state: state,
+                    city: city,
+                    phone1: phone1,
+                    phone2: phone2,
+                    totalCapacity: "1",
+                    externalId: token
+                })
+                    .then(response => {
+                        let postgresId = response["data"]["id"]
+                        logIn(postgresId)
+                    })
+                    .catch(error => {
+                        setDisableButton(false)
+                        alert(`There was an error creating the restaurant. Error details: ${error}`)
+                    })
             })
             .catch(function (error) {
-                setLoading(false)
-                if (error.response.data) {
-                    let code = error.response.data.error.errors[0].message
-                    console.log(code)
-                    if (code == "EMAIL_EXISTS") {
+                setDisableButton(false)
+                console.log(error)
+                if (error) {
+                    // let code = error.response.data.error.errors[0].message
+                    // console.log(code)
+                    if (error == "EMAIL_EXISTS") {
                         alert("Ya existe este correo, use otro")
-                    } else if (code == "TOO_MANY_ATTEMPTS_TRY_LATER") {
+                    } else if (error == "TOO_MANY_ATTEMPTS_TRY_LATER") {
                         alert("Intentó muchas veces, pruebe más tarde")
-                    } else if (code == "INVALID_EMAIL") {
+                    } else if (error == "INVALID_EMAIL") {
                         alert("Correo invalido")
                     } else {
                         alert("Error, intente de nuevo")
@@ -90,6 +118,7 @@ export default function LogIn({ navigation }) {
                     style={styles.input}
                     onChangeText={setNumInt}
                     value={numInt}
+                    placeholder={"opcional"}
                 />
                 <Text style={styles.label}>Colonia</Text>
                 <TextInput
@@ -114,12 +143,22 @@ export default function LogIn({ navigation }) {
                     style={styles.input}
                     onChangeText={setPhone1}
                     value={phone1}
+                    placeholder={"opcional"}
                 />
                 <Text style={styles.label}>Teléfono 2</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setPhone2}
                     value={phone2}
+                    placeholder={"opcional"}
+                />
+                <Text style={styles.label}>Descripción</Text>
+                <TextInput
+                    multiline
+                    numberOfLines={6}
+                    style={styles.longInput}
+                    onChangeText={setDesc}
+                    value={desc}
                 />
                 <Text style={styles.label}>Datos de acceso</Text>
                 <TextInput
@@ -148,6 +187,7 @@ export default function LogIn({ navigation }) {
                         title="Crear"
                         color="#fc6c27"
                         accessibilityLabel="Crear"
+                        disabled={disableButton}
                     />
                 </View>
 
@@ -183,6 +223,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         backgroundColor: "#fff"
+    },
+    longInput: {
+        width: "100%",
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        backgroundColor: "#fff"
+
     },
 
 });

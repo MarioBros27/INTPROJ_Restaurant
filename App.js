@@ -29,7 +29,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   const initialLoginState = {
     isLoading: true,
-    token: null
+    postgresId: null
   };
 
   const loginReducer = (prevState, action) => {
@@ -37,19 +37,19 @@ export default function App() {
       case 'RETRIEVE_TOKEN':
         return {
           ...prevState,
-          token: action.token,
+          postgresId: action.postgresId,
           isLoading: false,
         };
       case 'LOGIN':
         return {
           ...prevState,
-          token: action.token,
+          postgresId: action.postgresId,
           isLoading: false,
         };
       case 'LOGOUT':
         return {
           ...prevState,
-          token: null,
+          postgresId: null,
           isLoading: false,
         };
     }
@@ -58,18 +58,18 @@ export default function App() {
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
   const authContext = React.useMemo(() => ({
-    logIn: async (token) => {
+    logIn: async (postgresId) => {
       try {
-        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('postgresId', postgresId);
       } catch (e) {
         console.log(e);
       }
-      // console.log('user token: ', token);
-      dispatch({ type: 'LOGIN', token: token });
+      // console.log('user postgresId: ', postgresId);
+      dispatch({ type: 'LOGIN', postgresId: postgresId });
     },
     logOut: async () => {
       try {
-        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('postgresId');
       } catch (e) {
         console.log(e);
       }
@@ -81,14 +81,14 @@ export default function App() {
 
   React.useEffect(() => {
     setTimeout(async () => {
-      let token
-      token = null
+      let postgresId
+      postgresId = null
       try {
-        token = await AsyncStorage.getItem('token');
+        postgresId = await AsyncStorage.getItem('postgresId');
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: 'RETRIEVE_TOKEN', token: token });
+      dispatch({ type: 'RETRIEVE_TOKEN', postgresId: postgresId });
     }, 0)
   }, []);
   if (loginState.isLoading) {
@@ -102,7 +102,7 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
 
       <NavigationContainer>
-        {loginState.token !== null ? (
+        {loginState.postgresId !== null ? (
 
           <Tab.Navigator
             screenOptions={{
@@ -111,15 +111,17 @@ export default function App() {
               tabBarInactiveTintColor: "black"
             }}
           >
-            <Tab.Screen name="ClientesNavigator" component={ClientesNavigator} options={{
+            <Tab.Screen name="ClientesNavigator"  options={{
               title: "Clientes",
               tabBarShowLabel: false,
               headerShown: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="table-chair" color={color} size={size} />
               )
-            }} />
-            <Tab.Screen name="OrdenesNavigator" component={OrdenesNavigator}
+            }} >
+              {()=><ClientesNavigator id={loginState.postgresId}/>}
+              </Tab.Screen>
+            <Tab.Screen name="OrdenesNavigator" 
 
               options={{
                 title: "Ordenes",
@@ -130,31 +132,39 @@ export default function App() {
                   <Ionicons name="fast-food" color={color} size={size} />
                 ),
 
-              }} />
+              }} >
+              {()=><OrdenesNavigator id={loginState.postgresId}/>}
+              </Tab.Screen>
 
-            <Tab.Screen name="Pagos" component={Pagos} options={{
+            <Tab.Screen name="Pagos"  options={{
               title: "Historial Pagos",
               tabBarShowLabel: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialIcons name="attach-money" color={color} size={size} />
               )
-            }} />
-            <Tab.Screen name="ReservacionesNavigator" component={ReservacionNavigator} options={{
+            }} >
+            {()=><Pagos id={loginState.postgresId}/>}
+            </Tab.Screen>
+            <Tab.Screen name="ReservacionesNavigator"  options={{
               title: "Reservaciones",
               headerShown: false,
               tabBarShowLabel: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="format-list-checkbox" color={color} size={size} />
               )
-            }} />
-            <Tab.Screen name="ProfileNavigator" component={ProfileNavigator} options={{
+            }} >
+            {()=><ReservacionNavigator id={loginState.postgresId}/>}
+            </Tab.Screen>
+            <Tab.Screen name="ProfileNavigator"  options={{
               title: "Perfil",
               tabBarShowLabel: false,
               headerShown: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialIcons name="person" color={color} size={size} />
               )
-            }} />
+            }} >
+            {()=><ProfileNavigator id={loginState.postgresId}/>}
+            </Tab.Screen>
 
           </Tab.Navigator>
         )

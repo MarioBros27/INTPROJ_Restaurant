@@ -5,15 +5,21 @@ import { AuthContext } from '../context'
 import Loading from './Loading';
 import axios from 'axios'
 
+const appSettings = require('../app-settings.json');
+
 export default function LogIn({ navigation }) {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const [loading, setLoading] = React.useState(false)
+    const [disableButton, setDisableButton] = React.useState(false)
 
     const { logIn } = React.useContext(AuthContext);
 
     const handleLogin = () => {
-        setLoading(true)
+        if (email.length == 0  || password.length == 0) {
+            alert("No has completado todos los campos")
+            return;
+        }
+        setDisableButton(true)
         const params = {
             "email": email,
             "password": password,
@@ -22,12 +28,19 @@ export default function LogIn({ navigation }) {
         axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGB-OZeGVtIXJfmD1HYeJ1s9vUNEj18Tc",params)
         .then(function(response){
             let token = response.data['localId']
-            console.log(token)
-            logIn(token)
+            axios.get(`${appSettings['backend-host']}/restaurants/externalId/${token}`)
+                    .then(response => {
+                        let postgresId = response["data"]["id"]
+                        logIn(postgresId)
+                    })
+                    .catch(error => {
+                        setDisableButton(false)
+                        alert(`There was an error logging in. Error details: ${error}`)
+                    })
+
         })
         .catch(function(error){
-            console.log("error :(", error)
-            setLoading(false)
+            setDisableButton(false)
             if(error){
                 let code = error.response.data.error.code
                 if(code == 400){
@@ -41,9 +54,7 @@ export default function LogIn({ navigation }) {
 
     }
 
-    if (loading) {
-        return (<Loading />)
-    } else {
+
         return (
 
             <View style={styles.container}>
@@ -54,6 +65,7 @@ export default function LogIn({ navigation }) {
                     onChangeText={setEmail}
                     value={email}
                     placeholder="Email"
+                    autoCapitalize='none'
                 />
                 <TextInput
                     style={styles.input}
@@ -68,6 +80,8 @@ export default function LogIn({ navigation }) {
                         title="Log In"
                         color="#fc6c27"
                         accessibilityLabel="Log In"
+                        disabled={disableButton}
+
                     />
                 </View>
                 <View style={styles.buttonCreate}>
@@ -78,12 +92,14 @@ export default function LogIn({ navigation }) {
                         title="Crear cuenta"
                         color="#000"
                         accessibilityLabel="Crear cuenta"
+                        disabled={disableButton}
+
                     />
                 </View>
             </View>
 
         );
-    }
+    
 }
 
 const styles = StyleSheet.create({

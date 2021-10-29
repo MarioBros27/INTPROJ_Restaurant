@@ -5,8 +5,8 @@ import CodeForClient from './CodeForClient'
 import ClientNew from './ClientNew'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function ClientesNavigator({ navigation }) {
-
+export default function ClientesNavigator({ navigation,id }) {
+    console.log("hola",id)
 
     const Stack = createNativeStackNavigator();
 
