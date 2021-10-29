@@ -7,17 +7,26 @@ import RestItem from './RestItem'
 import Browser from './Browser'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function ProfileNavigator({ navigation }) {
-
+export default function ProfileNavigator({ navigation,id }) {
+    
 
     const Stack = createNativeStackNavigator();
 
 
     return (
         <Stack.Navigator initialRouteName="Profile" >
-            <Stack.Screen name="Info" options={{title:"Información"}} component={RestInfo} />
-            <Stack.Screen name="Bank" options={{title:"Registrar para cobro digital"}} component={RestBank} />
-            <Stack.Screen name="Menu" options={{title:"Menú"}} component={RestMenu} />
+            <Stack.Screen name="Info" options={{title:"Información"}} >
+                {(props)=>(<RestInfo {...props} id={id}/>)
+                }
+            </Stack.Screen>
+            <Stack.Screen name="Bank" options={{title:"Registrar para cobro digital"}}  >
+                {(props)=>(<RestBank {...props} id={id}/>)
+                }
+            </Stack.Screen>
+            <Stack.Screen name="Menu" options={{title:"Menú"}}  >
+                {(props)=>(<RestMenu {...props} id={id}/>)
+                }
+            </Stack.Screen>
             <Stack.Screen name="Profile" options={{title:"Perfil"}}component={Profile} />
             <Stack.Screen name="Item" options={{title:""}}component={RestItem} />
         </Stack.Navigator>

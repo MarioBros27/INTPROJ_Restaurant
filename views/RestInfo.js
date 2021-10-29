@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
-
-export default function RestInfo({ navigation }) {
+import axios from 'axios'
+export default function RestInfo({ navigation,id }) {
     const [name, setName] = React.useState("")
     const [street, setStreet] = React.useState("")
     const [numExt, setNumExt] = React.useState("")
@@ -13,14 +13,64 @@ export default function RestInfo({ navigation }) {
     const [phone2, setPhone2] = React.useState("")
     const [desc, setDesc] = React.useState("")
 
+    const [loaded,setLoaded] =React.useState(false)
+    const [disableButton, setDisableButton] = React.useState(false)
+
+
+    const appSettings = require('../app-settings.json');
+
+    React.useEffect(()=>{
+        axios.get(`${appSettings['backend-host']}/restaurants/${id}`
+           )
+            .then(response => {
+                setName(response["data"]["name"])
+                setStreet((response["data"]["street"]))
+                setNumExt(response["data"]["externalNumber"])
+                setNumInt(response["data"]["internalNumber"])
+                setColonia(response["data"]["suburb"])
+                setCity(response["data"]["city"])
+                setState(response["data"]["state"])
+                setPhone1(response["data"]["phone1"])
+                setPhone2(response["data"]["phone2"])
+                setDesc(response["data"]["description"])
+
+                setLoaded(true)
+            })
+            .catch(error => {
+                alert(`There was an error creating the restaurant. Error details: ${error}`)
+            })
+    },[])
     const submitChanges = ()=>{
         if (desc.length == 0|| name.length == 0 ||street.length == 0  || numExt.length == 0|| colonia.length == 0 ||city.length == 0  || state.length == 0) {
             alert("Error: has dejado vacio campos importantes")
             return;
         }
+        setDisableButton(true)
+        axios.put(`${appSettings['backend-host']}/restaurants/${id}`, {
+            name: name,
+            description: desc,
+            street: street,
+            externalNumber: numExt,
+            internalNumber: numInt,
+            suburb: colonia,
+            state: state,
+            city: city,
+            phone1: phone1,
+            phone2: phone2
+        })
+            .then(response => {
+                setDisableButton(false)
+                alert("cambios guardados")
+            })
+            .catch(error => {
+                setDisableButton(false)
+                alert(`There was an error creating the restaurant. Error details: ${error}`)
+            })
     }
     return (
+       
         <ScrollView>
+             {loaded &&
             <View style={styles.container}>
                 <Text style={styles.label}>Nombre del restaurante</Text>
                 <TextInput
@@ -86,15 +136,18 @@ export default function RestInfo({ navigation }) {
                 />
                 <Button
                     onPress={() => {
-
+                        submitChanges()
                     }}
                     title="Guardar cambios"
                     color="green"
                     accessibilityLabel="Guardar cambios"
+                    disabled={disableButton}
+
                 />
                 
-            </View>
+            </View>}
         </ScrollView>
+
     );
 }
 
