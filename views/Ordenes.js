@@ -39,17 +39,18 @@ export default function Ordenes({ navigation, id }) {
                 response['data'].forEach((ele) => {
                     const date = new Date(ele["createdAt"])
                     if (dateAcceptable(today, date)) {
-                        if (ele["status"] == "pendiente") {
-                            cleanOrders[0].data.push(ele)
+                        if (!ele.done) {
+                            if (ele["status"] == "pendiente") {
+                                cleanOrders[0].data.push(ele)
 
-                        } else if (ele["status"] == "atendido") {
-                            cleanOrders[1].data.push(ele)
-                        } else if (ele["status"] == "entregado") {
-                            cleanOrders[2].data.push(ele)
-                        } else if (ele["status"] == "cancelado") {
-                            cleanOrders[3].data.push(ele)
+                            } else if (ele["status"] == "atendido") {
+                                cleanOrders[1].data.push(ele)
+                            } else if (ele["status"] == "entregado") {
+                                cleanOrders[2].data.push(ele)
+                            } else if (ele["status"] == "cancelado") {
+                                cleanOrders[3].data.push(ele)
+                            }
                         }
-
                     }
                 })
                 setData(cleanOrders)
@@ -66,7 +67,7 @@ export default function Ordenes({ navigation, id }) {
         });
     }, [])
     const Item = ({ item }) => {
-        
+
         return (
             <TouchableOpacity onPress={() => {
                 navigation.navigate("Orden", {
