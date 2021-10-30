@@ -39,7 +39,7 @@ export default function Ordenes({ navigation, id }) {
                 response['data'].forEach((ele) => {
                     const date = new Date(ele["createdAt"])
                     if (dateAcceptable(today, date)) {
-                        if (!ele.done) {
+                        if (!ele["Bill"]["done"]) {
                             if (ele["status"] == "pendiente") {
                                 cleanOrders[0].data.push(ele)
 
