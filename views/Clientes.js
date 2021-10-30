@@ -60,7 +60,7 @@ export default function Pagos({ navigation }) {
                         navigation.navigate("ClientNew")
                     }}
                     title="Check In"
-                    color="green"
+                    color="#fc6c27"
                 />
             </View>
             <FlatList

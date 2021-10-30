@@ -50,7 +50,7 @@ export default function RestItem({ route, navigation, id }) {
             })
                 .then(response => {
                     setDisableButton(false)
-                    alert("cambios guardados")
+                    navigation.pop()
                 })
                 .catch(error => {
                     setDisableButton(false)
