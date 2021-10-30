@@ -39,7 +39,7 @@ export default function RestItem({ route, navigation, id }) {
                 })
                 .catch(error => {
                     setDisableButton(false)
-                    alert(`There was an error creating the restaurant. Error details: ${error}`)
+                    alert(`There was an error updating the item. Error details: ${error}`)
                 })
         } else {//If we are posting a new item
             axios.post(`${appSettings['backend-host']}/restaurants/${id}/items/`, {
@@ -54,7 +54,7 @@ export default function RestItem({ route, navigation, id }) {
                 })
                 .catch(error => {
                     setDisableButton(false)
-                    alert(`There was an error creating the restaurant. Error details: ${error}`)
+                    alert(`There was an error creating the item. Error details: ${error}`)
                 })
         }
     }

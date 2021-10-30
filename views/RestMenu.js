@@ -45,7 +45,7 @@ export default function RestMenu({ navigation, id }) {
                 setItems(response["data"])
             })
             .catch(error => {
-                alert(`There was an error creating the restaurant. Error details: ${error}`)
+                alert(`There was an error fetching the Restaurant menu. Error details: ${error}`)
             })
     }
     React.useEffect(() => {

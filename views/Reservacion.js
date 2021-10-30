@@ -1,42 +1,66 @@
 import React from 'react';
-import { StyleSheet, View, Text,Button } from 'react-native';
-
+import { StyleSheet, View, Text, Button } from 'react-native';
+import axios from 'axios';
 export default function Reservacion({ route, navigation }) {
     const { item } = route.params;
+    const appSettings = require('../app-settings.json');
+    const [disableButton, setDisableButton] = React.useState(false)
+
+    const editStatus = (statusIn)=>{
+        setDisableButton(true)
+        axios.put(`${appSettings['backend-host']}/reservations/${item.id}`,
+        {
+            status:statusIn
+        })
+        
+            .then(response => {
+                
+                alert("Cambio realizado")
+                setDisableButton(false)
+            })
+            .catch(error => {
+                setDisableButton(false)
+                alert(`There was an error updating the status of the reservation. Error details: ${error}`)
+            })
+    }
     return (
 
         <View style={styles.parentContainer}>
 
             <View style={styles.infoContainer}>
-                <Text style={styles.title}>{item.nombre}</Text>
-                <Text style={styles.subtitle}>#Personas: {item.personas}</Text>
-                <Text style={styles.subtitle}>{item.fecha}</Text>
-                <Text style={styles.subtitle}>{item.hora}</Text>
+                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+                <Text style={styles.subtitle}>#Personas: {item.seats}</Text>
+                <Text style={styles.subtitle}>{item.appointment.substr(0, 10)}</Text>
+                <Text style={styles.subtitle}>{item.appointment.substr(11, 5)}</Text>
             </View>
-            {item.status == "pendiente" &&
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        alert("aceptando")
-                    }}
-                    title="Aceptar reservación"
-                    color="green"
-                    accessibilityLabel="Aceptar reservación"
-                />
-                
-            </View>
+            {(item.status == "waiting" || item.status == "canceled") &&
+                <View style={styles.buttonContainer}>
+                    <Button
+                        onPress={() => {
+                            editStatus("accepted")
+                        }}
+                        title="Aceptar reservación"
+                        color="green"
+                        accessibilityLabel="Aceptar reservación"
+                        disabled={disableButton}
+                    />
+
+                </View>
             }
+            {item.status != "canceled" &&
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("cancelando")
+                        editStatus("canceled")
                     }}
                     title="Cancelar reservación"
                     color="red"
                     accessibilityLabel="Cancelar reservación"
+                    disabled={disableButton}
                 />
-                
+
             </View>
+            }
         </View>
 
     );

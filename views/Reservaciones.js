@@ -1,58 +1,113 @@
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity, SectionList } from 'react-native';
-const DATA = [
 
-    {
-        title: "Pendientes:",
-        data: [{
-            id: "1",
-            status: "pendiente",
-            nombre: "Marco Bonilla Ruiz",
-            personas: "4",
-            fecha: "12-12-2021",
-            hora: "14:30"
-        },
-        {
-            id: "2",
-            status: "pendiente",
-            nombre: "Marco Lucio Ruiz",
-            personas: "2",
-            fecha: "12-12-2021",
-            hora: "14:30"
-        }]
-    },
-    {
-        title: "Aceptados:",
-        data: [{
-            id: "1",
-            status: "aceptado",
-            nombre: "Marco Bonilla Ruiz",
-            personas: "4",
-            fecha: "12-12-2021",
-            hora: "14:30"
-        },
-        {
-            id: "2",
-            status: "aceptado",
-            nombre: "Marco Lucio Ruiz",
-            personas: "2",
-            fecha: "12-12-2021",
-            hora: "14:30"
-        },
-        {
-            id: "3",
-            status: "aceptado",
-            nombre: "Manuela Molcas",
-            personas: "4",
-            fecha: "12-12-2021",
-            hora: "14:30"
-        },]
+import axios from 'axios';
+
+// const DATA = [
+
+//     {
+//         title: "Pendientes:",
+//         data: [{
+//             id: "1",
+//             status: "pendiente",
+//             nombre: "Marco Bonilla Ruiz",
+//             personas: "4",
+//             fecha: "12-12-2021",
+//             hora: "14:30"
+//         },
+//         {
+//             id: "2",
+//             status: "pendiente",
+//             nombre: "Marco Lucio Ruiz",
+//             personas: "2",
+//             fecha: "12-12-2021",
+//             hora: "14:30"
+//         }]
+//     },
+//     {
+//         title: "Aceptados:",
+//         data: [{
+//             id: "1",
+//             status: "aceptado",
+//             nombre: "Marco Bonilla Ruiz",
+//             personas: "4",
+//             fecha: "12-12-2021",
+//             hora: "14:30"
+//         },
+//         {
+//             id: "2",
+//             status: "aceptado",
+//             nombre: "Marco Lucio Ruiz",
+//             personas: "2",
+//             fecha: "12-12-2021",
+//             hora: "14:30"
+//         },
+//         {
+//             id: "3",
+//             status: "aceptado",
+//             nombre: "Manuela Molcas",
+//             personas: "4",
+//             fecha: "12-12-2021",
+//             hora: "14:30"
+//         },]
+//     }
+
+// ]
+
+
+export default function Reservaciones({ navigation,id }) {
+    const [data,setData] = React.useState([])
+    const appSettings = require('../app-settings.json');
+
+    const dateAcceptable = function(firstDate, secondDate) {
+        if (firstDate.setHours(0, 0, 0,0) <= secondDate.setHours(0, 0, 0,0)) {
+          return true;
+        }
+      
+        return false;
+      };
+    const fetchData = () => {
+        axios.get(`${appSettings['backend-host']}/reservations?restaurantId=${id}`
+        )
+            .then(response => {
+                const today = new Date();
+                let cleanAppointments = [{
+                    title:"Pendientes:",
+                    data:[]
+                },
+                {
+                    title:"Aceptados:",
+                    data:[]
+                },
+                {
+                    title:"Cancelados:",
+                    data:[]
+                }]
+                response['data'].forEach((ele)=>{
+                    const date = new Date(ele["appointment"])
+                    if(dateAcceptable(today,date)){
+                        if(ele["status"]=="waiting"){
+                            cleanAppointments[0]["data"].push(ele)
+                        }else if(ele["status"]=="accepted"){
+                            cleanAppointments[1]["data"].push(ele)
+                        }else{
+                            cleanAppointments[2]["data"].push(ele)
+                        }
+                    }
+                })
+                setData(cleanAppointments)
+            })
+            .catch(error => {
+                // console.log(error)
+                alert(`There was an error fetching the reservations. Error details: ${error}`)
+            })
     }
-
-]
-
-
-export default function Pagos({ navigation }) {
+    React.useEffect(() => {
+        fetchData()
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            fetchData();
+        });
+    }, [])
     const Item = ({ item }) => (
         <TouchableOpacity onPress={() => {
             navigation.navigate("Reservacion", {
@@ -60,25 +115,26 @@ export default function Pagos({ navigation }) {
             })
         }}>
             <View style={styles.item}>
-                <Text style={styles.title}>{item.nombre}</Text>
-                <Text style={styles.subtitle}>#Personas: {item.personas}</Text>
-                <Text style={styles.subtitle}>{item.fecha}</Text>
-                <Text style={styles.subtitle}>{item.hora}</Text>
+                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+                <Text style={styles.subtitle}>#Personas: {item.seats}</Text>
+                <Text style={styles.subtitle}>{item.appointment.substr(0,10)}</Text>
+                <Text style={styles.subtitle}>{item.appointment.substr(11,5)}</Text>
             </View>
         </TouchableOpacity>
 
     );
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }) => {
+        return(
         <Item item={item} />
-    );
+    );}
     return (
 
         <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("actualizando")
+                       fetchData()
                     }}
                     title="Actualizar"
                     color="green"
@@ -86,7 +142,7 @@ export default function Pagos({ navigation }) {
                 />
             </View>
             <SectionList
-                sections={DATA}
+                sections={data}
                 keyExtractor={(item, index) => item + index}
                 renderItem={renderItem }
                 renderSectionHeader={({ section: { title } }) => (
@@ -126,8 +182,8 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontWeight: "bold"
     },
-    subtite: {
-        fontSize: 12
+    subtitle: {
+        fontSize: 16
     }
 
 });
