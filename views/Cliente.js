@@ -1,39 +1,54 @@
 import React from 'react';
 import { StyleSheet, View, Text,Button } from 'react-native';
-
+import axios from 'axios';
 export default function Cliente({ route, navigation }) {
     const { item } = route.params;
+    const appSettings = require('../app-settings.json');
+    const [disableButton, setDisableButton] = React.useState(false)
+    
+    let pagado = ""
+    if(item.paid){
+        pagado = "Sí"
+    }else{
+        pagado = "No"
+    }
+
+    const handleDone = ()=>{
+        setDisableButton(true)
+        axios.put(`${appSettings['backend-host']}/bills/${item.id}`,
+        {
+            done:true
+        })
+        
+            .then(response => {
+                navigation.pop()
+            })
+            .catch(error => {
+                setDisableButton(false)
+                alert(`There was an error updating the status of the bill. Error details: ${error}`)
+            })
+    }
     return (
 
         <View style={styles.parentContainer}>
 
             <View style={styles.infoContainer}>
-                <Text style={styles.title}>{item.nombre}</Text>
-                <Text style={styles.subtitle}>#Mesa: {item.mesa}</Text>
+                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+                <Text style={styles.subtitle}>#Mesa: {item.tableNumber}</Text>
                 <Text style={styles.subtitle}>Total: {item.total}</Text>
-                <Text style={styles.subtitle}>Check-in: {item.hora}</Text>
-                <Text style={styles.subtitleBold}>Pagado? Sí</Text>
+                <Text style={styles.subtitle}>Check-in: {item.checkIn.substr(11, 5)}</Text>
+                <Text style={styles.subtitleBold}>Pagado? {pagado}</Text>
 
             </View>
-            {/* <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        navigation.navigate("CodeForClient",{
-                            id:item.id
-                        })
-                    }}
-                    title="Ver Codigo"
-                    color="black"
-                />
-                
-            </View> */}
+            
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("Pendiente")
+                        handleDone()
                     }}
                     title="Terminado"
                     color="red"
+                    disabled={disableButton}
                 />
                 
             </View>
