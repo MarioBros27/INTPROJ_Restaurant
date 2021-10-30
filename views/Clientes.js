@@ -65,6 +65,9 @@ export default function Clientes({ navigation, id }) {
         });
     }, [])
     const Item = ({ item }) => {
+        let time = new Date(item.checkIn)
+        let hours = time.getHours()
+        let minutes = time.getMinutes()
 
         return (
             <TouchableOpacity onPress={() => {
@@ -76,7 +79,8 @@ export default function Clientes({ navigation, id }) {
                     <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
                     <Text style={styles.subtitle}>#Mesa: {item.tableNumber}</Text>
                     <Text style={styles.subtitle}>{
-                        item.checkIn.substr(11, 5)
+                        // item.checkIn.substr(11, 5)
+                        `${hours}:${minutes}`
                     }</Text>
                     <Text style={styles.subtitle}>Total: ${item.total}</Text>
                 </View>
