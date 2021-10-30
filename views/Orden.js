@@ -1,53 +1,68 @@
 import React from 'react';
-import { StyleSheet, View, Text,Button } from 'react-native';
-
-export default function Orden({ route, navigation }) {
+import { StyleSheet, View, Text, Button } from 'react-native';
+import axios from 'axios';
+export default function Orden({ route, navigation, id }) {
     const { item } = route.params;
+
+    let time = new Date(item.createdAt)
+    let hours = time.getHours()
+    let minutes = time.getMinutes()
+    const appSettings = require('../app-settings.json');
+
+
+    const setStatus = (status)=>{
+        axios.put(`${appSettings['backend-host']}/itemBills/${item.id}`,
+        {
+            status:status
+        }
+        ).then((response)=>{navigation.pop()})
+        .catch((error)=>{alert(`There was an error updating the error. Error details: ${error}`)})
+    }
     return (
 
         <View style={styles.parentContainer}>
 
             <View style={styles.infoContainer}>
-                <Text style={styles.title}>{item.item}</Text>
-                <Text style={styles.subtitle}>#Mesa: {item.mesa}</Text>
-                <Text style={styles.subtitle}>{item.cliente}</Text>
-                <Text style={styles.subtitle}>{item.hora}</Text>
+                <Text style={styles.title}>{item["Bill"]["Items"][0]["name"]}</Text>
+                <Text style={styles.subtitle}>#Mesa: {item["Bill"]["tableNumber"]}</Text>
+                <Text style={styles.subtitle}>{item["Bill"]["Customer"]["firstName"]} {item["Bill"]["Customer"]["lastName"]}</Text>
+                <Text style={styles.subtitle}>Pidió a las {hours}:{minutes}</Text>
             </View>
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("Pendiente")
+                        setStatus("pendiente")
                     }}
                     title="Pendiente"
                     color="blue"
                 />
-                
+
             </View>
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("Atendido")
+                        setStatus("atendido")
                     }}
                     title="Atendido"
                     color="orange"
                 />
-                
+
             </View>
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("Entregado")
+                        setStatus("entregado")
                     }}
                     title="Entregado"
                     color="green"
                 />
-                
+
             </View>
-            
+
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("cancelando")
+                        setStatus("cancelado")
                     }}
                     title="Cancelar orden"
                     color="red"

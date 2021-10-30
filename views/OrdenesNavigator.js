@@ -4,7 +4,7 @@ import Orden from './Orden'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function OrdenesNavigator({ navigation }) {
+export default function OrdenesNavigator({ navigation,id }) {
 
 
     const Stack = createNativeStackNavigator();
@@ -12,8 +12,12 @@ export default function OrdenesNavigator({ navigation }) {
 
     return (
         <Stack.Navigator initialRouteName="Ordenes" >
-            <Stack.Screen name="Ordenes" options={{title:"Ordenes"}} component={Ordenes} />
-            <Stack.Screen name="Orden" options={{title:"Orden"}} component={Orden} />
+            <Stack.Screen name="Ordenes" options={{title:"Ordenes"}} >
+                {(props)=>(<Ordenes {...props} id={id}/>)}
+                </Stack.Screen>
+            <Stack.Screen name="Orden" options={{title:"Orden"}}  >
+                {(props)=>(<Orden {...props} id={id}/>)}
+                </Stack.Screen>
         </Stack.Navigator>
     );
 }

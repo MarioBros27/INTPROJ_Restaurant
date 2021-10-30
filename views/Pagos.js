@@ -77,7 +77,6 @@ export default function Pagos({ navigation, id }) {
         // });
     }, [])
     const Item = ({ item }) => {
-        console.log(item)
         let time = new Date(item.paymentTime)
         let hours = time.getHours()
         let minutes = time.getMinutes()
