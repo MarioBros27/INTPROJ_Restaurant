@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 const pagos = [
     {
         id: "1",
@@ -45,29 +46,57 @@ const pagos = [
 
 
 
-export default function Pagos({ navigation }) {
-    const Item = ({ item }) => (
-        // <TouchableOpacity onPress={()=>{navigation.navigate("Pago",{
-        //     pago: item
-        // })}}>
-        //     <View style={styles.item}>
-        //         <Text style={styles.title}>{item.nombre}</Text>
-        //         <Text style={styles.subtitle}>{item.fecha}</Text>
-        //         <Text style={styles.subtitle}>{item.hora}</Text>
-        //         <Text style={styles.subtitle}>Total: ${item.total}</Text>
-        //         <Text style={styles.subtitle}>Propina: ${item.propina}</Text>
-        //     </View>
-        // </TouchableOpacity>
-        <View style={styles.item}>
-            <Text style={styles.title}>{item.nombre}</Text>
-            <Text style={styles.subtitle}>Mesa: {item.mesa}</Text>
-            <Text style={styles.subtitle}>Fecha de pago: {item.fecha}</Text>
-            <Text style={styles.subtitle}>Hora de pago: {item.hora}</Text>
-            <Text style={styles.subtitle}>Total: ${item.total}</Text>
-            <Text style={styles.subtitle}>Propina: ${item.propina}</Text>
-            <Text style={styles.subtitle}>Referencia: {item.referencia}</Text>
-        </View>
-    );
+export default function Pagos({ navigation, id }) {
+
+    const [data, setData] = React.useState([])
+    const appSettings = require('../app-settings.json');
+
+
+    const fetchData = () => {
+        axios.get(`${appSettings['backend-host']}/bills?restaurantId=${id}`
+        )
+            .then(response => {
+                let cleanData = []
+                response.data.forEach(element => {
+                    if (element.paid) {
+                        cleanData.push(element)
+                    }
+                });
+
+                setData(cleanData)
+            })
+            .catch(error => {
+                // console.log(error)
+                alert(`There was an error fetching the payments. Error details: ${error}`)
+            })
+    }
+    React.useEffect(() => {
+        fetchData()
+        // const willFocusSubscription = navigation.addListener('focus', () => {
+        //     fetchData();
+        // });
+    }, [])
+    const Item = ({ item }) => {
+        console.log(item)
+        let time = new Date(item.paymentTime)
+        let hours = time.getHours()
+        let minutes = time.getMinutes()
+        let day = time.getDay()
+        let month = time.getMonth() +1
+        let year = time.getFullYear()
+
+        return (
+            <View style={styles.item}>
+                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+                <Text style={styles.subtitle}>Mesa: {item.tableNumber}</Text>
+                <Text style={styles.subtitle}>Fecha de pago: {item.paymentTime.substr(0,10)}</Text>
+                <Text style={styles.subtitle}>Hora de pago: {hours}:{minutes}</Text>
+                <Text style={styles.subtitle}>Total: ${item.total}</Text>
+                <Text style={styles.subtitle}>Propina: ${item.tip}</Text>
+                <Text style={styles.subtitle}>Referencia: {item.paymentReference}</Text>
+            </View>
+        );
+    }
 
     const renderItem = ({ item }) => (
         <Item item={item} />
@@ -78,7 +107,7 @@ export default function Pagos({ navigation }) {
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        alert("actualizando")
+                        fetchData()
                     }}
                     title="Actualizar"
                     color="green"
@@ -86,7 +115,7 @@ export default function Pagos({ navigation }) {
                 />
             </View>
             <FlatList
-                data={pagos}
+                data={data}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
             />
