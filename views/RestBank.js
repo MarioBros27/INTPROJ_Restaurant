@@ -6,7 +6,8 @@ export default function RestBank({ navigation }) {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.label}>Contacta Press2Eat para registrarte y poder recibir pagos en línea</Text>
+                <Text style={styles.label}>Contacta Press2Eat para registrarte y poder recibir pagos desde la app, al correo:</Text>
+                <Text style={styles.label}>querollopanda@hotmail.com</Text>
                 
             </View>
         </ScrollView>
