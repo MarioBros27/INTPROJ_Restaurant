@@ -8,104 +8,57 @@ export default function Ordenes({ navigation, id }) {
     const [data, setData] = React.useState([])
     const appSettings = require('../app-settings.json');
 
-    const dateAcceptable = function (firstDate, secondDate) {
-        if (firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)) {
-            return true;
-        }
-
-        return false;
-    };
-    const fetchData = () => {
-        axios.get(`${appSettings['backend-host']}/itemBills/byRestaurant?restaurantId=${id}`
-        )
+    React.useEffect(() => {
+        axios.get(`${appSettings['backend-host']}/bills?restaurantId=${id}`)
             .then(response => {
-                const today = new Date();
-                let cleanOrders = [{
-                    title: "Pendientes:",
-                    data: []
-                },
-                {
-                    title: "Atendidos:",
-                    data: []
-                },
-                {
-                    title: "Entregados:",
-                    data: []
-                },
-                {
-                    title: "Cancelados:",
-                    data: []
-                }]
-                response['data'].forEach((ele) => {
-                    const date = new Date(ele["createdAt"])
-                    if (dateAcceptable(today, date)) {
-                        if (!ele["Bill"]["done"]) {
-                            if (ele["status"] == "pendiente") {
-                                cleanOrders[0].data.push(ele)
-
-                            } else if (ele["status"] == "atendido") {
-                                cleanOrders[1].data.push(ele)
-                            } else if (ele["status"] == "entregado") {
-                                cleanOrders[2].data.push(ele)
-                            } else if (ele["status"] == "cancelado") {
-                                cleanOrders[3].data.push(ele)
-                            }
-                        }
-                    }
-                })
-                setData(cleanOrders)
+                setData(response.data)
             })
             .catch(error => {
-                // console.log(error)
                 alert(`There was an error fetching the reservations. Error details: ${error}`)
             })
-    }
-    React.useEffect(() => {
-        fetchData()
-        const willFocusSubscription = navigation.addListener('focus', () => {
-            fetchData();
-        });
     }, [])
-    const Item = ({ item }) => {
+    
+    const renderItem = ({ item }) => (
+        <Item item={item} />
+    );
 
-        return (
+    const renderItemBill = ({ item }) => {
+
+        return(
             <TouchableOpacity onPress={() => {
                 navigation.navigate("Orden", {
                     item: item
                 })
             }}>
-                <View style={styles.item}>
-                    <Text style={styles.title}>{item["Bill"]["Items"][0]["name"]}</Text>
-                    <Text style={styles.subtitle}>#Mesa: {item["Bill"]["tableNumber"]}</Text>
-                    <Text style={styles.subtitle}>{item["Bill"]["Customer"]["firstName"]} {item["Bill"]["Customer"]["lastName"]}</Text>
+                <View style={styles.itemBill}>
+                    <Text style={styles.title}>{ `${item.name} - ${item.ItemBill.quantity} (${item.ItemBill.status})`}</Text>
                 </View>
             </TouchableOpacity>
+        )
+    };
 
+    const Item = ({ item }) => {
+        return (
+            <View style={styles.item}>
+                <Text style={styles.subtitle}>#Mesa: {item.tableNumber}</Text>
+                <Text style={styles.subtitle}>{item.Customer.firstName + " " + item.Customer.lastName}</Text>
+                <FlatList
+                    data={item.Items}
+                    renderItem={renderItemBill}
+                    keyExtractor={item => item.id}
+                />
+                
+            </View>
         );
     }
-    const renderItem = ({ item }) => (
-        <Item item={item} />
-    );
+    
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        fetchData()
-                    }}
-                    title="Actualizar"
-                    color="green"
-                    accessibilityLabel="Actualizar"
-                />
-            </View>
-            <SectionList
-                sections={data}
-                keyExtractor={(item, index) => item + index}
+            <FlatList
+                data={data}
+                keyExtractor={item => item.id}
                 renderItem={renderItem}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                )}
             />
         </SafeAreaView>
 
@@ -125,6 +78,9 @@ const styles = StyleSheet.create({
         borderColor: "#000",
         borderWidth: 1,
         borderRadius: 22
+    },
+    itemBill: {
+        padding: 5
     },
     buttonContainer: {
         marginBottom: 4

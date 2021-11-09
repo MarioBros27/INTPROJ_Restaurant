@@ -103,16 +103,6 @@ export default function Pagos({ navigation, id }) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        fetchData()
-                    }}
-                    title="Actualizar"
-                    color="green"
-                    accessibilityLabel="Actualizar"
-                />
-            </View>
             <FlatList
                 data={data}
                 renderItem={renderItem}
