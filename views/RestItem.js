@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, Button, TextInput } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable, TextInput } from 'react-native';
 import axios
     from 'axios';
 export default function RestItem({ route, navigation, id }) {
@@ -80,7 +80,7 @@ export default function RestItem({ route, navigation, id }) {
                 <Text style={styles.label}>Descripción</Text>
                 <TextInput
                     multiline
-                    numberOfLines={6}
+                    numberOfLines={4}
                     style={styles.longInput}
                     onChangeText={setDesc}
                     value={desc}
@@ -88,25 +88,18 @@ export default function RestItem({ route, navigation, id }) {
 
 
                 <View style={styles.buttonContainer}>
-                    <Button
+                    <Pressable
                         onPress={() => {
                             submitChanges()
                         }}
-                        title="Guardar cambios"
-                        color="green"
-                        accessibilityLabel="Guardar cambios"
                         disabled={disableButton}
-                    />
+                        style={styles.saveButton}
+                    >
+                        <Text
+                            style={styles.textButton}
+                        >Guardar cambios</Text>
+                    </Pressable>
                 </View>
-                {/* <Button
-                    onPress={() => {
-                        deleteItem()
-                    }}
-                    title="Borrar producto"
-                    color="red"
-                    accessibilityLabel="Borrar producto"
-                    disabled={disableButton}
-                /> */}
             </View>
         </ScrollView>
 
@@ -115,32 +108,59 @@ export default function RestItem({ route, navigation, id }) {
 
 const styles = StyleSheet.create({
     container: {
+        padding: 20
+    },
+
+    label: {
+        marginBottom: 12,
+        fontWeight: "bold",
+        color: "#000",
+        borderLeftColor: "#8DD7BF"
+    },
+
+    input: {
+        width: "100%",
+        marginBottom: 20,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 2,
+        borderRadius: 10,
+        padding: 10,
+        color: "#666",
+        backgroundColor: "#fff"
+    },
+
+    longInput: {
+        width: "100%",
+        marginBottom: 12,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 2,
+        borderRadius: 10,
+        padding: 10,
+        color: "#666",
+        backgroundColor: "#fff"
+    },
+
+    buttonContainer: {
         flex: 1,
         flexDirection: "column",
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20
     },
-    label: {
-        fontWeight: "bold"
-    },
-    input: {
-        width: "100%",
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        backgroundColor: "#fff"
-    },
-    longInput: {
-        width: "100%",
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        backgroundColor: "#fff"
 
+    saveButton: {
+        marginTop: 10,
+        backgroundColor: "#C05780",
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 50
     },
-    buttonContainer: {
-        marginBottom: 20
+
+    textButton: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: "#fff" 
     }
 
 });
