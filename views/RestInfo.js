@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Pressable, ScrollView } from 'react-native';
 import axios from 'axios'
 export default function RestInfo({ navigation,id }) {
     const [name, setName] = React.useState("")
@@ -81,7 +81,7 @@ export default function RestInfo({ navigation,id }) {
                 <Text style={styles.label}>Descripción</Text>
                 <TextInput
                     multiline
-                    numberOfLines={6}
+                    numberOfLines={4}
                     style={styles.longInput}
                     onChangeText={setDesc}
                     value={desc}
@@ -92,58 +92,80 @@ export default function RestInfo({ navigation,id }) {
                     onChangeText={setStreet}
                     value={street}
                 />
-                <Text style={styles.label}>Número exterior</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setNumExt}
-                    value={numExt}
-                />
-                <Text style={styles.label}>Número interior</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setNumInt}
-                    value={numInt}
-                />
+                <View style={styles.rowContainer}>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.label}>Número exterior</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setNumExt}
+                            value={numExt}
+                        />
+                    </View>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.label}>Número interior</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setNumInt}
+                            value={numInt}
+                        />
+                    </View>
+                </View>
                 <Text style={styles.label}>Colonia</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setColonia}
                     value={colonia}
                 />
-                <Text style={styles.label}>Ciudad</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setCity}
-                    value={city}
-                />
-                <Text style={styles.label}>Estado</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setState}
-                    value={state}
-                />
-                <Text style={styles.label}>Teléfono 1</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPhone1}
-                    value={phone1}
-                />
-                <Text style={styles.label}>Teléfono 2</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPhone2}
-                    value={phone2}
-                />
-                <Button
-                    onPress={() => {
-                        submitChanges()
-                    }}
-                    title="Guardar cambios"
-                    color="green"
-                    accessibilityLabel="Guardar cambios"
-                    disabled={disableButton}
+                <View style={styles.rowContainer}>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.label}>Ciudad</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setCity}
+                            value={city}
+                        />
+                    </View>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.label}>Estado</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setState}
+                            value={state}
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowContainer}>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.label}>Teléfono 1</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setPhone1}
+                            value={phone1}
+                        />
+                    </View>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.label}>Teléfono 2</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setPhone2}
+                            value={phone2}
+                        />
+                    </View>
+                </View>
 
-                />
+                <View style={styles.buttonContainer}>
+                    <Pressable
+                        onPress={() => {
+                            submitChanges()
+                        }}
+                        disabled={disableButton}
+                        style={styles.saveButton}
+                    >
+                        <Text
+                            style={styles.textButton}
+                        >Guardar cambios</Text>
+                    </Pressable>
+                </View>
                 
             </View>}
         </ScrollView>
@@ -153,28 +175,69 @@ export default function RestInfo({ navigation,id }) {
 
 const styles = StyleSheet.create({
     container: {
+        padding: 20
+    },
+
+    label: {
+        marginBottom: 12,
+        fontWeight: "bold",
+        color: "#000",
+        borderLeftColor: "#8DD7BF"
+    },
+
+    input: {
+        width: "100%",
+        marginBottom: 20,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 2,
+        borderRadius: 10,
+        padding: 10,
+        color: "#666",
+        backgroundColor: "#fff"
+    },
+
+    longInput: {
+        width: "100%",
+        marginBottom: 12,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 2,
+        borderRadius: 10,
+        padding: 10,
+        color: "#666",
+        backgroundColor: "#fff"
+    },
+
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    columnContainer: {
+        alignItems: 'flex-start',
+        width: "48%"
+    },
+
+    buttonContainer: {
+        flex: 1,
         flexDirection: "column",
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20
     },
-    label: {
-        fontWeight: "bold"
-    },
-    input: {
-        width: "100%",
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        backgroundColor: "#fff"
-    },
-    longInput: {
-        width: "100%",
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        backgroundColor: "#fff"
 
+    saveButton: {
+        marginTop: 10,
+        backgroundColor: "#00A5E3",
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 50
     },
+
+    textButton: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: "#fff" 
+    }
 
 });
