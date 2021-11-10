@@ -1,35 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Pressable, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-// const items = [
-//     {
-//         id: "0",
-//         nombre: "hola",
-//         precio: "25",
-//         descripcion: "sahfiashiasjbfhdakjhkjash"
-//     },
-//     {
-//         id: "1",
-//         nombre: "hola",
-//         precio: "25",
-//         descripcion: "sahfiashiasjbfhdakjhkjash"
-//     },
-//     {
-//         id: "2",
-//         nombre: "hola",
-//         precio: "25",
-//         descripcion: "sahfiashiasjbfhdakjhkjash"
-//     },
-//     {
-//         id: "3",
-//         nombre: "hola",
-//         precio: "25",
-//         descripcion: "sahfiashiasjbfhdakjhkjash"
-//     }
-// ]
-
-
-
 
 export default function RestMenu({ navigation, id }) {
 
@@ -62,8 +33,19 @@ export default function RestMenu({ navigation, id }) {
             })
         }}>
             <View style={styles.item}>
-                <Text style={styles.title}>{item.name}</Text>
-                <Text style={styles.subtitle}>${item.price}</Text>
+                <View style={styles.rowContainer}>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>{item.name}</Text>
+                        <Text style={styles.subtitle}>{item.description}</Text>
+                    </View>
+                    <View style={styles.priceContainer}>
+                        <Text style={styles.price}>${item.price}</Text>
+                    </View>
+                </View>
+            </View>
+            
+            <View style={styles.breakLine}>
+
             </View>
         </TouchableOpacity>
     );
@@ -77,16 +59,18 @@ export default function RestMenu({ navigation, id }) {
 
             <View style={styles.buttonContainer}>
 
-                <Button
+                <Pressable
                     onPress={() => {
                         navigation.navigate("Item", {
                             item: null
                         })
                     }}
-                    title="Agregar al menú"
-                    color="green"
-                    accessibilityLabel="Agregar al menú"
-                />
+                    style={styles.addButton}
+                >
+                    <Text
+                        style={styles.textButton}
+                    >Agregar objeto</Text>
+                </Pressable>
             </View>
             <FlatList
                 data={items}
@@ -103,25 +87,73 @@ const styles = StyleSheet.create({
         flex: 1,
         // marginTop: StatusBar.currentHeight || 0,
     },
+
+    buttonContainer: {
+        alignItems: 'flex-end',
+    },
+
+    addButton: {
+        marginRight: 20,
+        marginTop: 10,
+        marginBottom: 15,
+        backgroundColor: "#C05780",
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 50
+    },
+
+    textButton: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: "#fff" 
+    },
+
     item: {
         backgroundColor: '#fff',
-        padding: 15,
-        marginVertical: 8,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 15,
+        marginVertical: 6,
         marginHorizontal: 16,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+        borderRadius: 15
     },
-    buttonContainer: {
-        marginBottom: 4
+
+    breakLine: {
+        marginVertical: 3,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 1,
+        marginHorizontal: 8
     },
+
     title: {
         fontSize: 18,
         marginBottom: 2,
         fontWeight: "bold"
     },
+
     subtitle: {
         fontSize: 16
-    }
+    },
 
+    price: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: "#C05780"
+    },
+    
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    titleContainer: {
+        alignItems: 'flex-start'
+    },
+
+    priceContainer: {
+        alignItems: 'flex-end',
+        marginRight: 15
+    },
 });
