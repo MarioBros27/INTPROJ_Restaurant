@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, Alert } from 'react-native';
 import axios from 'axios';
 export default function Cliente({ route, navigation }) {
     const { item } = route.params;
@@ -31,6 +31,16 @@ export default function Cliente({ route, navigation }) {
                 alert(`There was an error updating the status of the bill. Error details: ${error}`)
             })
     }
+    const doneAlert = () => {
+        Alert.alert('', '¿De verdad quieres sacar al cliente?', [
+            { text: 'Aceptar', onPress: () => handleDone() },
+            {
+                text: 'Cancelar',
+                style: 'cancel',
+            },
+
+        ]);
+    }
     return (
 
         <View style={styles.parentContainer}>
@@ -47,7 +57,7 @@ export default function Cliente({ route, navigation }) {
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        handleDone()
+                        doneAlert()
                     }}
                     title="Terminado"
                     color="red"
@@ -62,7 +72,6 @@ export default function Cliente({ route, navigation }) {
 
 const styles = StyleSheet.create({
     parentContainer: {
-        // flex: 1,
         flexDirection: "column",
         padding: 20
     },

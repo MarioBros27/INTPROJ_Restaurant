@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { QRCode } from 'react-native-custom-qr-codes-expo';
-import SvgQRCode from 'react-native-qrcode-svg';
 
 export default function CodeForClient({ route, navigation }) {
     const { id } = route.params;
@@ -10,12 +9,12 @@ export default function CodeForClient({ route, navigation }) {
 
 
         <View style={styles.container}>
-            
+
 
             <QRCode codeStyle='square' content={id} />
         </View>
 
-        
+
 
     );
 }

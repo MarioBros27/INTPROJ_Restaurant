@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Button, TextInput, Image, Text } from 'react-native';
 import logo from '../assets/logo.png'
 import { AuthContext } from '../context'
-import Loading from './Loading';
 import axios from 'axios'
 
 const appSettings = require('../app-settings.json');
@@ -15,7 +14,7 @@ export default function LogIn({ navigation }) {
     const { logIn } = React.useContext(AuthContext);
 
     const handleLogin = () => {
-        if (email.length == 0  || password.length == 0) {
+        if (email.length == 0 || password.length == 0) {
             alert("No has completado todos los campos")
             return;
         }
@@ -25,10 +24,10 @@ export default function LogIn({ navigation }) {
             "password": password,
             "returnSecureToken": true
         }
-        axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGB-OZeGVtIXJfmD1HYeJ1s9vUNEj18Tc",params)
-        .then(function(response){
-            let token = response.data['localId']
-            axios.get(`${appSettings['backend-host']}/restaurants/externalId/${token}`)
+        axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGB-OZeGVtIXJfmD1HYeJ1s9vUNEj18Tc", params)
+            .then(function (response) {
+                let token = response.data['localId']
+                axios.get(`${appSettings['backend-host']}/restaurants/externalId/${token}`)
                     .then(response => {
                         let postgresId = response["data"]["id"]
                         logIn(postgresId)
@@ -38,68 +37,68 @@ export default function LogIn({ navigation }) {
                         alert(`There was an error logging in. Error details: ${error}`)
                     })
 
-        })
-        .catch(function(error){
-            setDisableButton(false)
-            if(error){
-                let code = error.response.data.error.code
-                if(code == 400){
-                    alert("Error en usuario o contraseña")
-                }else{
-                    alert("Error, intentelo otra vez")
+            })
+            .catch(function (error) {
+                setDisableButton(false)
+                if (error) {
+                    let code = error.response.data.error.code
+                    if (code == 400) {
+                        alert("Error en usuario o contraseña")
+                    } else {
+                        alert("Error, intentelo otra vez")
+                    }
                 }
-            }
-            
-        })
+
+            })
 
     }
 
 
-        return (
+    return (
 
-            <View style={styles.container}>
-                <Image style={styles.stretch} source={logo} />
-                <Text style ={styles.title}>Restaurante</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setEmail}
-                    value={email}
-                    placeholder="Email"
-                    autoCapitalize='none'
+        <View style={styles.container}>
+            <Image style={styles.stretch} source={logo} />
+            <Text style={styles.title}>Restaurante</Text>
+            <TextInput
+                style={styles.input}
+                onChangeText={setEmail}
+                value={email}
+                placeholder="Email"
+                autoCapitalize='none'
+            />
+            <TextInput
+                style={styles.input}
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Password"
+                secureTextEntry={true}
+            />
+            <View style={styles.buttonLogIn}>
+                <Button
+                    onPress={() => { handleLogin() }}
+                    title="Log In"
+                    color="#fc6c27"
+                    accessibilityLabel="Log In"
+                    disabled={disableButton}
+
                 />
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPassword}
-                    value={password}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                />
-                <View style={styles.buttonLogIn}>
-                    <Button
-                        onPress={() => { handleLogin()}}
-                        title="Log In"
-                        color="#fc6c27"
-                        accessibilityLabel="Log In"
-                        disabled={disableButton}
-
-                    />
-                </View>
-                <View style={styles.buttonCreate}>
-                    <Button
-                        onPress={() => {
-                            navigation.navigate('SignUp')
-                        }}
-                        title="Crear cuenta"
-                        color="#000"
-                        accessibilityLabel="Crear cuenta"
-                        disabled={disableButton}
-
-                    />
-                </View>
             </View>
+            <View style={styles.buttonCreate}>
+                <Button
+                    onPress={() => {
+                        navigation.navigate('SignUp')
+                    }}
+                    title="Crear cuenta"
+                    color="#000"
+                    accessibilityLabel="Crear cuenta"
+                    disabled={disableButton}
 
-        );
-    
+                />
+            </View>
+        </View>
+
+    );
+
 }
 
 const styles = StyleSheet.create({
@@ -110,7 +109,6 @@ const styles = StyleSheet.create({
         padding: 20
     },
     title: {
-        // fontFamily: "Menlo",
         fontSize: 20,
         fontWeight: "bold"
     },

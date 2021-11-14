@@ -1,14 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity, SectionList } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-
-
 
 export default function Ordenes({ navigation, id }) {
     const [data, setData] = React.useState([])
     const appSettings = require('../app-settings.json');
 
-    React.useEffect(() => {
+    const fetchData = () => {
         axios.get(`${appSettings['backend-host']}/bills?restaurantId=${id}`)
             .then(response => {
                 setData(response.data)
@@ -16,22 +14,28 @@ export default function Ordenes({ navigation, id }) {
             .catch(error => {
                 alert(`There was an error fetching the reservations. Error details: ${error}`)
             })
+    }
+    React.useEffect(() => {
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            fetchData();
+        });
     }, [])
-    
+
+
     const renderItem = ({ item }) => (
         <Item item={item} />
     );
 
     const renderItemBill = ({ item }) => {
 
-        return(
+        return (
             <TouchableOpacity onPress={() => {
                 navigation.navigate("Orden", {
                     item: item
                 })
             }}>
                 <View style={styles.itemBill}>
-                    <Text style={styles.title}>{ `${item.name} - ${item.ItemBill.quantity} (${item.ItemBill.status})`}</Text>
+                <Text style={styles.title}>{ `${item.name} - ${item.ItemBill.quantity} (${item.ItemBill.status})`}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -47,11 +51,11 @@ export default function Ordenes({ navigation, id }) {
                     renderItem={renderItemBill}
                     keyExtractor={item => item.id}
                 />
-                
+
             </View>
         );
     }
-    
+
     return (
 
         <SafeAreaView style={styles.container}>
@@ -68,7 +72,6 @@ export default function Ordenes({ navigation, id }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
     item: {
         backgroundColor: '#fff',

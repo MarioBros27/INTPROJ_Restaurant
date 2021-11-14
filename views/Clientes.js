@@ -1,38 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, FlatList, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-// const pagos = [
-//     {
-//         id: "1",
-//         nombre: "Mario Ruiz",
-//         mesa: "1",
-//         hora: "12:20",
-//         total: "420"
-//     },
-//     {
-//         id: "2",
-//         nombre: "Mario Sangre Lopez",
-//         hora: "12:20",
-//         mesa: "2",
-//         total: "0"
-//     },
-//     {
-//         id: "3",
-//         nombre: "Mario Lupo Marzo",
-//         hora: "12:20",
-//         mesa: "1",
-//         total: "920"
-//     },
-//     {
-//         id: "4",
-//         nombre: "Mario Mañana Viene Santa",
-//         hora: "12:20",
-//         mesa: "99",
-//         total: "420"
-//     },
-// ]
-
-
 
 export default function Clientes({ navigation, id }) {
 
@@ -46,15 +14,14 @@ export default function Clientes({ navigation, id }) {
             .then(response => {
                 let cleanData = []
                 response.data.forEach(element => {
-                    if(!element.done){
+                    if (!element.done) {
                         cleanData.push(element)
                     }
                 });
-                
+
                 setData(cleanData)
             })
             .catch(error => {
-                // console.log(error)
                 alert(`There was an error fetching the clients. Error details: ${error}`)
             })
     }
@@ -79,7 +46,6 @@ export default function Clientes({ navigation, id }) {
                     <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
                     <Text style={styles.subtitle}>#Mesa: {item.tableNumber}</Text>
                     <Text style={styles.subtitle}>{
-                        // item.checkIn.substr(11, 5)
                         `${hours}:${minutes}`
                     }</Text>
                     <Text style={styles.subtitle}>Total: ${item.total}</Text>
@@ -115,8 +81,7 @@ export default function Clientes({ navigation, id }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
+        flex: 1
     },
     item: {
         backgroundColor: '#fff',

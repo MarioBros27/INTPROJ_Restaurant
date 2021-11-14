@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Pressable, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Pressable, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 export default function RestMenu({ navigation, id }) {
@@ -85,7 +85,6 @@ export default function RestMenu({ navigation, id }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
 
     buttonContainer: {

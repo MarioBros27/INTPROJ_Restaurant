@@ -1,13 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, TextInput } from 'react-native';
-import axios
-    from 'axios';
+import axios from 'axios';
+
 export default function RestItem({ route, navigation, id }) {
     const { item } = route.params;
 
     const [name, setName] = React.useState("")
-    // const [brand, setBrand] = React.useState("")
-    // const [type, setType] = React.useState("")
     const [price, setPrice] = React.useState("")
     const [desc, setDesc] = React.useState("")
     const [disableButton, setDisableButton] = React.useState(false)
@@ -58,7 +56,7 @@ export default function RestItem({ route, navigation, id }) {
                 })
         }
     }
-    const deleteItem = ()=>{
+    const deleteItem = () => {
 
     }
     return (
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
     textButton: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: "#fff" 
+        color: "#fff"
     }
 
 });

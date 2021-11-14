@@ -4,7 +4,6 @@ import SignUp from './views/SignUp'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from './views/Profile'
 import ProfileNavigator from './views/ProfileNavigator';
 import Loading from './views/Loading'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -12,15 +11,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReservacionNavigator from './views/ReservacionNavigator';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './context';
-import axios from 'axios'
-import Clientes from './views/Clientes'
-import Reservaciones from './views/Reservaciones';
 import Pagos from './views/Pagos'
 import OrdenesNavigator from './views/OrdenesNavigator';
-import Ordenes from './views/Ordenes'
 import ClientesNavigator from './views/ClientesNavigator';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,16 +56,15 @@ export default function App() {
       try {
         await AsyncStorage.setItem('postgresId', postgresId);
       } catch (e) {
-        console.log(e);
+        console.log("");
       }
-      // console.log('user postgresId: ', postgresId);
       dispatch({ type: 'LOGIN', postgresId: postgresId });
     },
     logOut: async () => {
       try {
         await AsyncStorage.removeItem('postgresId');
       } catch (e) {
-        console.log(e);
+        console.log("");
       }
       dispatch({ type: 'LOGOUT' });
     },
@@ -86,7 +79,7 @@ export default function App() {
       try {
         postgresId = await AsyncStorage.getItem('postgresId');
       } catch (e) {
-        console.log(e);
+        console.log("");
       }
       dispatch({ type: 'RETRIEVE_TOKEN', postgresId: postgresId });
     }, 0)
@@ -111,7 +104,7 @@ export default function App() {
               tabBarInactiveTintColor: "black"
             }}
           >
-            <Tab.Screen name="ClientesNavigator"  options={{
+            <Tab.Screen name="ClientesNavigator" options={{
               title: "Clientes",
               tabBarShowLabel: false,
               headerShown: false,
@@ -119,9 +112,9 @@ export default function App() {
                 <MaterialCommunityIcons name="table-chair" color={color} size={size} />
               )
             }} >
-              {()=><ClientesNavigator id={loginState.postgresId}/>}
-              </Tab.Screen>
-            <Tab.Screen name="OrdenesNavigator" 
+              {() => <ClientesNavigator id={loginState.postgresId} />}
+            </Tab.Screen>
+            <Tab.Screen name="OrdenesNavigator"
 
               options={{
                 title: "Ordenes",
@@ -133,19 +126,19 @@ export default function App() {
                 ),
 
               }} >
-              {()=><OrdenesNavigator id={loginState.postgresId}/>}
-              </Tab.Screen>
+              {() => <OrdenesNavigator id={loginState.postgresId} />}
+            </Tab.Screen>
 
-            <Tab.Screen name="Pagos"  options={{
+            <Tab.Screen name="Pagos" options={{
               title: "Historial Pagos",
               tabBarShowLabel: false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialIcons name="attach-money" color={color} size={size} />
               )
             }} >
-            {()=><Pagos id={loginState.postgresId}/>}
+              {() => <Pagos id={loginState.postgresId} />}
             </Tab.Screen>
-            <Tab.Screen name="ReservacionesNavigator"  options={{
+            <Tab.Screen name="ReservacionesNavigator" options={{
               title: "Reservaciones",
               headerShown: false,
               tabBarShowLabel: false,
@@ -153,9 +146,9 @@ export default function App() {
                 <MaterialCommunityIcons name="format-list-checkbox" color={color} size={size} />
               )
             }} >
-            {()=><ReservacionNavigator id={loginState.postgresId}/>}
+              {() => <ReservacionNavigator id={loginState.postgresId} />}
             </Tab.Screen>
-            <Tab.Screen name="ProfileNavigator"  options={{
+            <Tab.Screen name="ProfileNavigator" options={{
               title: "Perfil",
               tabBarShowLabel: false,
               headerShown: false,
@@ -163,7 +156,7 @@ export default function App() {
                 <MaterialIcons name="person" color={color} size={size} />
               )
             }} >
-            {()=><ProfileNavigator id={loginState.postgresId}/>}
+              {() => <ProfileNavigator id={loginState.postgresId} />}
             </Tab.Screen>
 
           </Tab.Navigator>

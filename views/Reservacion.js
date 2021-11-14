@@ -1,20 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, Alert } from 'react-native';
 import axios from 'axios';
+
 export default function Reservacion({ route, navigation }) {
     const { item } = route.params;
     const appSettings = require('../app-settings.json');
     const [disableButton, setDisableButton] = React.useState(false)
 
-    const editStatus = (statusIn)=>{
+    const editStatus = (statusIn) => {
         setDisableButton(true)
         axios.put(`${appSettings['backend-host']}/reservations/${item.id}`,
-        {
-            status:statusIn
-        })
-        
+            {
+                status: statusIn
+            })
+
             .then(response => {
-                
+
                 alert("Cambio realizado")
                 setDisableButton(false)
             })
@@ -22,6 +23,16 @@ export default function Reservacion({ route, navigation }) {
                 setDisableButton(false)
                 alert(`There was an error updating the status of the reservation. Error details: ${error}`)
             })
+    }
+    const cancelAlert = () => {
+        Alert.alert('', '¿De verdad quieres cancelar la reservación?', [
+            { text: 'Aceptar', onPress: () => editStatus("canceled") },
+            {
+                text: 'Cancelar',
+                style: 'cancel',
+            },
+
+        ]);
     }
     return (
 
@@ -48,18 +59,18 @@ export default function Reservacion({ route, navigation }) {
                 </View>
             }
             {item.status != "canceled" &&
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        editStatus("canceled")
-                    }}
-                    title="Cancelar reservación"
-                    color="red"
-                    accessibilityLabel="Cancelar reservación"
-                    disabled={disableButton}
-                />
+                <View style={styles.buttonContainer}>
+                    <Button
+                        onPress={() => {
+                            cancelAlert()
+                        }}
+                        title="Cancelar reservación"
+                        color="red"
+                        accessibilityLabel="Cancelar reservación"
+                        disabled={disableButton}
+                    />
 
-            </View>
+                </View>
             }
         </View>
 

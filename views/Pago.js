@@ -3,17 +3,11 @@ import { StyleSheet, View, Text, ScrollView, Button, TextInput } from 'react-nat
 
 export default function Pago({ route, navigation }) {
     const { pago } = route.params;
-    // const [name, setName] = React.useState(item.nombre)
-    // // const [brand, setBrand] = React.useState("")
-    // // const [type, setType] = React.useState("")
-    // const [price, setPrice] = React.useState(item.precio)
-    // const [desc, setDesc] = React.useState(item.descripcion)
 
     const [name, setName] = React.useState("")
-    // const [brand, setBrand] = React.useState("")
-    // const [type, setType] = React.useState("")
     const [price, setPrice] = React.useState("")
     const [desc, setDesc] = React.useState("")
+
     React.useEffect(() => {
         if (item) {
             setName(item.nombre)

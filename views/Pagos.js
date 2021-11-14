@@ -1,50 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, FlatList } from 'react-native';
 import axios from 'axios';
-const pagos = [
-    {
-        id: "1",
-        nombre: "Mario Ruiz",
-        fecha: "12-12-2021",
-        hora: "12:20",
-        total: "24000",
-        propina: "20",
-        mesa: "1",
-        referencia: "askjhkjh1-qsasaas-assaas-as"
-    },
-    {
-        id: "2",
-        nombre: "Mario Sangre Lopez",
-        fecha: "12-12-2021",
-        hora: "12:20",
-        total: "24000",
-        propina: "20",
-        mesa: "2",
-        referencia: "askjhkjh1-qsasaas-assaas-as"
-    },
-    {
-        id: "3",
-        nombre: "Mario Lupo Marzo",
-        fecha: "12-12-2021",
-        hora: "12:20",
-        total: "24000",
-        propina: "20",
-        mesa: "1",
-        referencia: "askjhkjh1-qsasaas-assaas-as"
-    },
-    {
-        id: "4",
-        nombre: "Mario Mañana Viene Santa",
-        fecha: "12-12-2021",
-        hora: "12:20",
-        total: "24000",
-        propina: "20",
-        mesa: "99",
-        referencia: "askjhkjh1-qsasaas-assaas-as"
-    },
-]
-
-
 
 export default function Pagos({ navigation, id }) {
 
@@ -66,15 +22,11 @@ export default function Pagos({ navigation, id }) {
                 setData(cleanData)
             })
             .catch(error => {
-                // console.log(error)
                 alert(`There was an error fetching the payments. Error details: ${error}`)
             })
     }
     React.useEffect(() => {
         fetchData()
-        // const willFocusSubscription = navigation.addListener('focus', () => {
-        //     fetchData();
-        // });
     }, [])
     const Item = ({ item }) => {
         let time = new Date(item.paymentTime)
@@ -116,7 +68,6 @@ export default function Pagos({ navigation, id }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
     item: {
         backgroundColor: '#fff',

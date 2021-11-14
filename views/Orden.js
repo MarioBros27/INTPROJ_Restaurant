@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, Alert } from 'react-native';
 import axios from 'axios';
 export default function Orden({ route, navigation, id }) {
     const { item } = route.params;
@@ -7,24 +7,33 @@ export default function Orden({ route, navigation, id }) {
     let time = new Date(item.createdAt)
     const appSettings = require('../app-settings.json');
 
+    const cancelAlert = () => {
+        Alert.alert('', '¿De verdad quieres cancelar la orden?', [
+            { text: 'Aceptar', onPress: () => setStatus("cancelado") },
+            {
+                text: 'Cancelar',
+                style: 'cancel',
+            },
 
-    const setStatus = (status)=>{
-        console.log(item.ItemBill.id)
+        ]);
+    }
+
+    const setStatus = (status) => {
         axios.put(`${appSettings['backend-host']}/itemBills/${item.ItemBill.id}`,
-        {
-            status:status
-        }
-        ).then((response)=>{navigation.pop()})
-        .catch((error)=>{alert(`There was an error updating the error. Error details: ${error}`)})
+            {
+                status: status
+            }
+        ).then((response) => { navigation.pop() })
+            .catch((error) => { alert(`There was an error updating the error. Error details: ${error}`) })
     }
     return (
 
         <View style={styles.parentContainer}>
 
-                <Text style={styles.title}>{item.name}</Text>
-                <Text style={styles.subtitle}>Descripcion: {item.description}</Text>
-                <Text style={styles.subtitle}>Cantidad: {item.ItemBill.quantity}</Text>
-                <Text style={styles.subtitle}>Estado: {item.ItemBill.status}</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.subtitle}>Descripcion: {item.description}</Text>
+            <Text style={styles.subtitle}>Cantidad: {item.ItemBill.quantity}</Text>
+            <Text style={styles.subtitle}>Estado: {item.ItemBill.status}</Text>
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
@@ -59,7 +68,7 @@ export default function Orden({ route, navigation, id }) {
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                        setStatus("cancelado")
+                        cancelAlert()
                     }}
                     title="Marcar como cancelado"
                     color="#009dff"
