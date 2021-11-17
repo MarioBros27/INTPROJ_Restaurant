@@ -88,16 +88,6 @@ export default function ClientNew({ navigation, id }) {
                     keyboardType="numeric"
                 />
             </View>
-            {/* <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        handle
-                    }}
-                    title={buttonTitle}
-                    color="#fc6c27"
-                />
-
-            </View> */}
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
@@ -106,7 +96,6 @@ export default function ClientNew({ navigation, id }) {
                     title="Check In"
                     color="green"
                     disabled={!fetched}
-
                 />
 
             </View>
@@ -129,10 +118,11 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     qrScanner: {
-        marginTop: '10%',
-        marginBottom: '10%',
-        width: 200,
         height: 200,
+        width: '100%',
+        marginTop: 10,
+        marginBottom: 20,
+        borderRadius: 20,
         resizeMode: 'contain'
     },
     rowContainer: {

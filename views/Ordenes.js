@@ -29,35 +29,58 @@ export default function Ordenes({ navigation, id }) {
     const renderItemBill = ({ item }) => {
 
         return (
-            <TouchableOpacity onPress={() => {
-                navigation.navigate("Orden", {
-                    item: item
-                })
-            }}>
-                <View style={styles.itemBill}>
-                <Text style={styles.title}>{ `${item.name} - ${item.ItemBill.quantity} (${item.ItemBill.status})`}</Text>
+            <>
+                <View style={styles.rowContainer}>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.subtitle}>{`${item.ItemBill.quantity} ${item.name}`}</Text>
+                        { item.ItemBill.status == "pendiente" &&
+                            <Text style={styles.pendingOrder}>Pendiente</Text>
+                        }
+                        { item.ItemBill.status == "cancelado" &&
+                            <Text style={styles.cancelledOrder}>Cancelado</Text>
+                        }
+                        { item.ItemBill.status == "entregado" &&
+                            <Text style={styles.deliveredOrder}>Entregado</Text>
+                        }
+                        { item.ItemBill.status == "atendido" && 
+                            <Text style={styles.attendedOrder}>Atendido</Text>
+                        }
+                    </View>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("Orden", {
+                            item: item
+                        })
+                    }}>
+                        <View style={styles.detailsContainer}>
+                            
+                            <Text style={styles.detailsText}>Detalles</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
+            </>
         )
     };
 
     const Item = ({ item }) => {
         return (
-            <View style={styles.item}>
-                <Text style={styles.subtitle}>#Mesa: {item.tableNumber}</Text>
-                <Text style={styles.subtitle}>{item.Customer.firstName + " " + item.Customer.lastName}</Text>
-                <FlatList
-                    data={item.Items}
-                    renderItem={renderItemBill}
-                    keyExtractor={item => item.id}
-                />
+            <>
+                <View style={styles.item}>
+                    <Text style={styles.title}>{item.Customer.firstName + " " + item.Customer.lastName} - Mesa {item.tableNumber}</Text>
+                    <FlatList
+                        data={item.Items}
+                        renderItem={renderItemBill}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
 
-            </View>
+                <View style={styles.breakLine}>
+
+                </View>
+            </>
         );
     }
 
     return (
-
         <SafeAreaView style={styles.container}>
             <FlatList
                 data={data}
@@ -73,34 +96,99 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+
     item: {
         backgroundColor: '#fff',
-        padding: 15,
-        marginVertical: 8,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 15,
+        borderLeftColor: '#00b4d8',
+        borderLeftWidth: 3,
+        marginVertical: 6,
         marginHorizontal: 16,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+        borderRadius: 10
     },
-    itemBill: {
-        padding: 5
+
+    pendingOrder: {
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        marginLeft: 5,
+        marginBottom: 3,
+        borderRadius: 5,
+        backgroundColor: "#F8E473",
+        color: "#C49102"
     },
-    buttonContainer: {
-        marginBottom: 4
+
+    cancelledOrder: {
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        marginLeft: 5,
+        marginBottom: 3,
+        borderRadius: 5,
+        backgroundColor: "#FBA490",
+        color: "#B83253"
     },
-    header: {
-        fontSize: 24,
-        marginBottom: 2,
-        fontWeight: "bold",
-        marginLeft: 20
+
+    deliveredOrder: {
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        marginLeft: 5,
+        marginBottom: 3,
+        borderRadius: 5,
+        backgroundColor: "#8DD7BF",
+        color: "#315e26"
     },
+
+    attendedOrder: {
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        marginLeft: 5,
+        marginBottom: 3,
+        borderRadius: 5,
+        backgroundColor: "#C69FE9",
+        color: "#6F22B3"
+    },
+
+    breakLine: {
+        marginVertical: 3,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 1,
+        marginHorizontal: 8
+    },
+
     title: {
         fontSize: 18,
-        marginBottom: 2,
+        marginBottom: 10,
         fontWeight: "bold"
     },
+
     subtitle: {
         fontSize: 14
+    },
+    
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 3
+    },
+
+    titleContainer: {
+        alignItems: 'flex-start',
+        flexDirection: 'row'
+    },
+
+    detailsContainer: {
+        alignItems: 'flex-end',
+        marginRight: 15
+    },
+
+    detailsText: {
+        paddingHorizontal: 10,
+        paddingVertical: 2,
+        borderRadius: 10,
+        borderColor: '#00b4d8',
+        borderWidth: 1,
+        color: '#00b4d8'
     }
 
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Alert } from 'react-native';
 import axios from 'axios';
 export default function Orden({ route, navigation, id }) {
     const { item } = route.params;
@@ -27,79 +27,184 @@ export default function Orden({ route, navigation, id }) {
             .catch((error) => { alert(`There was an error updating the error. Error details: ${error}`) })
     }
     return (
-
-        <View style={styles.parentContainer}>
-
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.subtitle}>Descripcion: {item.description}</Text>
-            <Text style={styles.subtitle}>Cantidad: {item.ItemBill.quantity}</Text>
-            <Text style={styles.subtitle}>Estado: {item.ItemBill.status}</Text>
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        setStatus("pendiente")
-                    }}
-                    title="Marcar como pendiente"
-                    color="#8cd3ff"
-                />
-
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        setStatus("atendido")
-                    }}
-                    title="Marcar como atendido"
-                    color="#59bfff"
-                />
-
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        setStatus("entregado")
-                    }}
-                    title="Marcar como entregado"
-                    color="#26abff"
-                />
-
+        <>
+            <View style={styles.item}>
+                <View style={styles.rowContainer}>
+                    <View style={styles.leftContainer}>
+                        <Text style={styles.title}>{item.ItemBill.quantity} {item.name}</Text>
+                    </View>
+                    <View style={styles.rightContainer}>
+                        { item.ItemBill.status == "pendiente" &&
+                            <Text style={styles.pendingOrder}>Pendiente</Text>
+                        }
+                        { item.ItemBill.status == "cancelado" &&
+                            <Text style={styles.cancelledOrder}>Cancelado</Text>
+                        }
+                        { item.ItemBill.status == "entregado" &&
+                            <Text style={styles.deliveredOrder}>Entregado</Text>
+                        }
+                        { item.ItemBill.status == "atendido" && 
+                            <Text style={styles.attendedOrder}>Atendido</Text>
+                        }
+                    </View>
+                </View>
+                <Text style={styles.subtitle}>{item.description}</Text>
             </View>
 
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        cancelAlert()
-                    }}
-                    title="Marcar como cancelado"
-                    color="#009dff"
-                />
+            <View style={[styles.rowContainer, {marginHorizontal: 10, marginBottom: 10}]}>
+                <View style={[styles.leftContainer, {width: '50%'}]}>
+                    <Pressable
+                        onPress={() => {
+                            setStatus("pendiente")
+                        }}
+                        style={styles.pendingButton}
+                    >
+                        <Text style={styles.buttonText}>Marcar como pendiente</Text>
+                    </Pressable>
+                </View>
+
+                <View style={[styles.rightContainer, {width: '50%'}]}>
+                    <Pressable
+                        onPress={() => {
+                            setStatus("atendido")
+                        }}
+                        style={styles.attendedButton}
+                    >
+                        <Text style={styles.buttonText}>Marcar como atendido</Text>
+                    </Pressable>
+                </View>
             </View>
-        </View>
+
+            <View style={[styles.rowContainer, {marginHorizontal: 10}]}>
+                <View style={[styles.leftContainer, {width: '50%'}]}>
+                    <Pressable
+                        onPress={() => {
+                            cancelAlert()
+                        }}
+                        style={styles.cancelButton}
+                    >
+                        <Text style={styles.buttonText}>Marcar como cancelada</Text>
+                    </Pressable>
+                </View>
+
+                <View style={[styles.rightContainer, {width: '50%'}]}>
+                    <Pressable
+                        onPress={() => {
+                            setStatus("entregado")
+                        }}
+                        style={styles.deliveredButton}
+                    >
+                        <Text style={styles.buttonText}>Marcar como entregado</Text>
+                    </Pressable>
+                </View>
+            </View>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    parentContainer: {
-        flexDirection: "column",
-        padding: 20
-    },
-    infoContainer: {
+    item: {
         backgroundColor: '#fff',
-        padding: 15,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 15,
+        borderLeftColor: '#00b4d8',
+        borderLeftWidth: 3,
+        marginTop: 15,
+        marginBottom: 10,
+        marginHorizontal: 16,
+        borderRadius: 10
     },
-    buttonContainer: {
-        marginTop: 25
+
+    pendingOrder: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#F8E473",
+        color: "#C49102"
     },
+
+    cancelledOrder: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#FBA490",
+        color: "#B83253"
+    },
+
+    deliveredOrder: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#9DD7BF",
+        color: "#315e26"
+    },
+
+    attendedOrder: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#C69FE9",
+        color: "#6F22B3"
+    },
+
     title: {
-        fontSize: 32,
-        marginBottom: 2,
+        fontSize: 18,
+        marginBottom: 5,
         fontWeight: "bold"
     },
-    subtitle: {
-        fontSize: 18
-    }
 
+    subtitle: {
+        fontSize: 14
+    },
+
+    pendingButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: "#FCD423"
+    },
+
+    cancelButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: "#FE7282"
+    },
+
+    attendedButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: "#B77AEC"
+    },
+
+    deliveredButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: "#8CC6AE"
+    },
+
+    buttonText: {
+        fontSize: 14,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: "#fff" 
+    },
+    
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 3
+    },
+
+    leftContainer: {
+        alignItems: 'flex-start'
+    },
+
+    rightContainer: {
+        alignItems: 'flex-end',
+        marginRight: 15
+    }, 
 });
