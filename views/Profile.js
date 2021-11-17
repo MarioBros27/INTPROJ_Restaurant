@@ -1,31 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, View, Text, Pressable, Alert } from 'react-native';
 import { AuthContext } from '../context'
 
 export default function Profile({ navigation }) {
-    const [token, setToken] = React.useState("")
     const { logOut } = React.useContext(AuthContext);
 
-    React.useEffect(() => {
-        setTimeout(async () => {
+    const logOutAlert = () => {
+        Alert.alert('', '¿De verdad quieres salir?', [
+            { text: 'Aceptar', onPress: () => logOut() },
+            {
+                text: 'Cancelar',
+                style: 'cancel',
+            },
 
-            try {
-                let tokenT = await AsyncStorage.getItem('token');
-                setToken(tokenT)
-            } catch (e) {
-                console.log(e);
-            }
-            // dispatch({ type: 'RETRIEVE_TOKEN', token: token });
-        }, 0)
-    }, [])
+        ]);
+    }
     return (
 
         <View style={styles.container}>
 
-            {/* <Text>{token}</Text> */}
             <Pressable
-                onPress={() => {navigation.navigate('Info') }}
+                onPress={() => { navigation.navigate('Info') }}
                 style={[styles.pressableArea, styles.firstButton]}
             >
                 <Text
@@ -36,33 +31,33 @@ export default function Profile({ navigation }) {
             </Pressable>
 
             <Pressable
-                onPress={ () => { navigation.navigate('Menu') }}
+                onPress={() => { navigation.navigate('Menu') }}
                 style={[styles.pressableArea, styles.secondButton]}
             >
                 <Text
-                    style={[styles.text, styles. secondText]}
+                    style={[styles.text, styles.secondText]}
                 >
                     Menú del restaurante
                 </Text>
             </Pressable>
 
             <Pressable
-                onPress={ () => { navigation.navigate('Bank') }}
+                onPress={() => { navigation.navigate('Bank') }}
                 style={[styles.pressableArea, styles.thirdButton]}
             >
                 <Text
-                    style={[styles.text, styles. thirdText]}
+                    style={[styles.text, styles.thirdText]}
                 >
                     Cobro digital
                 </Text>
             </Pressable>
 
             <Pressable
-                onPress={ () => { logOut() }}
+                onPress={() => { logOutAlert() }}
                 style={[styles.pressableArea, styles.fourthButton]}
             >
                 <Text
-                    style={[styles.text, styles. fourthText]}
+                    style={[styles.text, styles.fourthText]}
                 >
                     Cerrar sesión
                 </Text>
@@ -96,12 +91,12 @@ const styles = StyleSheet.create({
         borderBottomColor: "#00A5E3",
         borderRightColor: "#00A5E3",
     },
-    
+
     secondButton: {
         borderBottomColor: "#C05780",
         borderRightColor: "#C05780",
     },
-    
+
     thirdButton: {
         borderBottomColor: "#4DD091",
         borderRightColor: "#4DD091",

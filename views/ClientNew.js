@@ -1,15 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import expo from 'expo'
 import axios from 'axios';
 export default function ClientNew({ navigation, id }) {
 
     const [name, setName] = React.useState("Escanea cliente")
-    const [customerId,setCustomerId] = React.useState("")
+    const [customerId, setCustomerId] = React.useState("")
     const [table, setTable] = React.useState("0")
     const [hasPermission, setHasPermission] = React.useState(null);
-    const [scanned, setScanned] = React.useState(false);
     const [fetched, setFetched] = React.useState(false)
     const appSettings = require('../app-settings.json');
 
@@ -22,13 +20,13 @@ export default function ClientNew({ navigation, id }) {
     }, []);
     let fetching = false
     const handleBarCodeScanned = ({ type, data }) => {
-        if(!fetching && !fetched){
-            fetching=true
+        if (!fetching && !fetched) {
+            fetching = true
             handleGet(data)
         }
 
     };
-    
+
     const handleGet = (customersId) => {
         axios.get(`${appSettings['backend-host']}/customers/${customersId}`)
             .then(response => {
@@ -38,40 +36,37 @@ export default function ClientNew({ navigation, id }) {
 
             })
             .catch(error => {
-                fetching =false
+                fetching = false
                 setName("error, intentelo de nuevo")
             })
     }
-    const handlePost = () =>{
+    const handlePost = () => {
         let tableNumber = "0"
-        if(table.length !=0){
+        if (table.length != 0) {
             tableNumber = table
         }
 
-        axios.post(`${appSettings['backend-host']}/bills`,{
+        axios.post(`${appSettings['backend-host']}/bills`, {
             checkIn: new Date(),
             total: 0,
-            tip:0,
-            done:false,
-            customerId:customerId,
-            tableNumber:tableNumber,
+            tip: 0,
+            done: false,
+            customerId: customerId,
+            tableNumber: tableNumber,
             restaurantId: id,
-            paid:false
+            paid: false
         })
             .then(response => {
                 navigation.pop()
 
             })
             .catch(error => {
-                
+
                 alert("error: intente todo de nuevo")
             })
 
     }
 
-    // if (hasPermission === null) {
-    //     return <Text>Requesting for camera permission</Text>;
-    // }
     if (hasPermission === false) {
         setName("NO tienes permiso para la camara")
 
@@ -122,7 +117,6 @@ export default function ClientNew({ navigation, id }) {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         flexDirection: "column",
         alignItems: 'center',
         justifyContent: 'center',

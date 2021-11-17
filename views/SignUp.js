@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Button, TextInput, Image, ScrollView, Text } from 'react-native';
-import logo from '../assets/logo.png'
+import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
 import { AuthContext } from '../context'
-import Loading from './Loading';
 import axios from 'axios'
 
 const appSettings = require('../app-settings.json');
@@ -72,10 +70,7 @@ export default function LogIn({ navigation }) {
             })
             .catch(function (error) {
                 setDisableButton(false)
-                console.log(error)
                 if (error) {
-                    // let code = error.response.data.error.errors[0].message
-                    // console.log(code)
                     if (error == "EMAIL_EXISTS") {
                         alert("Ya existe este correo, use otro")
                     } else if (error == "TOO_MANY_ATTEMPTS_TRY_LATER") {

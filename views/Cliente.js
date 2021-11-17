@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 import axios from 'axios';
 export default function Cliente({ route, navigation }) {
     const { item } = route.params;
@@ -30,6 +30,16 @@ export default function Cliente({ route, navigation }) {
                 setDisableButton(false)
                 alert(`There was an error updating the status of the bill. Error details: ${error}`)
             })
+    }
+    const doneAlert = () => {
+        Alert.alert('', '¿De verdad quieres sacar al cliente?', [
+            { text: 'Aceptar', onPress: () => handleDone() },
+            {
+                text: 'Cancelar',
+                style: 'cancel',
+            },
+
+        ]);
     }
     return (
         <>

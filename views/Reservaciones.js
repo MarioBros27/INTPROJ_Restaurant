@@ -1,96 +1,45 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity, SectionList } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, Button, TouchableOpacity, SectionList } from 'react-native';
 
 import axios from 'axios';
 
-// const DATA = [
 
-//     {
-//         title: "Pendientes:",
-//         data: [{
-//             id: "1",
-//             status: "pendiente",
-//             nombre: "Marco Bonilla Ruiz",
-//             personas: "4",
-//             fecha: "12-12-2021",
-//             hora: "14:30"
-//         },
-//         {
-//             id: "2",
-//             status: "pendiente",
-//             nombre: "Marco Lucio Ruiz",
-//             personas: "2",
-//             fecha: "12-12-2021",
-//             hora: "14:30"
-//         }]
-//     },
-//     {
-//         title: "Aceptados:",
-//         data: [{
-//             id: "1",
-//             status: "aceptado",
-//             nombre: "Marco Bonilla Ruiz",
-//             personas: "4",
-//             fecha: "12-12-2021",
-//             hora: "14:30"
-//         },
-//         {
-//             id: "2",
-//             status: "aceptado",
-//             nombre: "Marco Lucio Ruiz",
-//             personas: "2",
-//             fecha: "12-12-2021",
-//             hora: "14:30"
-//         },
-//         {
-//             id: "3",
-//             status: "aceptado",
-//             nombre: "Manuela Molcas",
-//             personas: "4",
-//             fecha: "12-12-2021",
-//             hora: "14:30"
-//         },]
-//     }
-
-// ]
-
-
-export default function Reservaciones({ navigation,id }) {
-    const [data,setData] = React.useState([])
+export default function Reservaciones({ navigation, id }) {
+    const [data, setData] = React.useState([])
     const appSettings = require('../app-settings.json');
 
-    const dateAcceptable = function(firstDate, secondDate) {
-        if (firstDate.setHours(0, 0, 0,0) <= secondDate.setHours(0, 0, 0,0)) {
-          return true;
+    const dateAcceptable = function (firstDate, secondDate) {
+        if (firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)) {
+            return true;
         }
-      
+
         return false;
-      };
+    };
     const fetchData = () => {
         axios.get(`${appSettings['backend-host']}/reservations?restaurantId=${id}`
         )
             .then(response => {
                 const today = new Date();
                 let cleanAppointments = [{
-                    title:"Pendientes:",
-                    data:[]
+                    title: "Pendientes:",
+                    data: []
                 },
                 {
-                    title:"Aceptados:",
-                    data:[]
+                    title: "Aceptados:",
+                    data: []
                 },
                 {
-                    title:"Cancelados:",
-                    data:[]
+                    title: "Cancelados:",
+                    data: []
                 }]
-                response['data'].forEach((ele)=>{
+                response['data'].forEach((ele) => {
                     const date = new Date(ele["appointment"])
-                    if(dateAcceptable(today,date)){
-                        if(ele["status"]=="waiting"){
+                    if (dateAcceptable(today, date)) {
+                        if (ele["status"] == "waiting") {
                             cleanAppointments[0]["data"].push(ele)
-                        }else if(ele["status"]=="accepted"){
+                        } else if (ele["status"] == "accepted") {
                             cleanAppointments[1]["data"].push(ele)
-                        }else{
+                        } else {
                             cleanAppointments[2]["data"].push(ele)
                         }
                     }
@@ -98,7 +47,6 @@ export default function Reservaciones({ navigation,id }) {
                 setData(cleanAppointments)
             })
             .catch(error => {
-                // console.log(error)
                 alert(`There was an error fetching the reservations. Error details: ${error}`)
             })
     }
@@ -117,24 +65,25 @@ export default function Reservaciones({ navigation,id }) {
             <View style={styles.item}>
                 <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
                 <Text style={styles.subtitle}>#Personas: {item.seats}</Text>
-                <Text style={styles.subtitle}>{item.appointment.substr(0,10)}</Text>
-                <Text style={styles.subtitle}>{item.appointment.substr(11,5)}</Text>
+                <Text style={styles.subtitle}>{item.appointment.substr(0, 10)}</Text>
+                <Text style={styles.subtitle}>{item.appointment.substr(11, 5)}</Text>
             </View>
         </TouchableOpacity>
 
     );
 
     const renderItem = ({ item }) => {
-        return(
-        <Item item={item} />
-    );}
+        return (
+            <Item item={item} />
+        );
+    }
     return (
 
         <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
                 <Button
                     onPress={() => {
-                       fetchData()
+                        fetchData()
                     }}
                     title="Actualizar"
                     color="green"
@@ -144,7 +93,7 @@ export default function Reservaciones({ navigation,id }) {
             <SectionList
                 sections={data}
                 keyExtractor={(item, index) => item + index}
-                renderItem={renderItem }
+                renderItem={renderItem}
                 renderSectionHeader={({ section: { title } }) => (
                     <Text style={styles.header}>{title}</Text>
                 )}
@@ -157,7 +106,6 @@ export default function Reservaciones({ navigation,id }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
     item: {
         backgroundColor: '#fff',

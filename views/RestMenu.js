@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Pressable, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Pressable, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 export default function RestMenu({ navigation, id }) {

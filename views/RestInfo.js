@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, Pressable, ScrollView } from 'react-native';
 import axios from 'axios'
-export default function RestInfo({ navigation,id }) {
+export default function RestInfo({ navigation, id }) {
     const [name, setName] = React.useState("")
     const [street, setStreet] = React.useState("")
     const [numExt, setNumExt] = React.useState("")
@@ -13,15 +13,15 @@ export default function RestInfo({ navigation,id }) {
     const [phone2, setPhone2] = React.useState("")
     const [desc, setDesc] = React.useState("")
 
-    const [loaded,setLoaded] =React.useState(false)
+    const [loaded, setLoaded] = React.useState(false)
     const [disableButton, setDisableButton] = React.useState(false)
 
 
     const appSettings = require('../app-settings.json');
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         axios.get(`${appSettings['backend-host']}/restaurants/${id}`
-           )
+        )
             .then(response => {
                 setName(response["data"]["name"])
                 setStreet((response["data"]["street"]))
@@ -39,9 +39,9 @@ export default function RestInfo({ navigation,id }) {
             .catch(error => {
                 alert(`There was an error creating the restaurant. Error details: ${error}`)
             })
-    },[])
-    const submitChanges = ()=>{
-        if (desc.length == 0|| name.length == 0 ||street.length == 0  || numExt.length == 0|| colonia.length == 0 ||city.length == 0  || state.length == 0) {
+    }, [])
+    const submitChanges = () => {
+        if (desc.length == 0 || name.length == 0 || street.length == 0 || numExt.length == 0 || colonia.length == 0 || city.length == 0 || state.length == 0) {
             alert("Error: has dejado vacio campos importantes")
             return;
         }
@@ -68,106 +68,106 @@ export default function RestInfo({ navigation,id }) {
             })
     }
     return (
-       
-        <ScrollView>
-             {loaded &&
-            <View style={styles.container}>
-                <Text style={styles.label}>Nombre del restaurante</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setName}
-                    value={name}
-                />
-                <Text style={styles.label}>Descripción</Text>
-                <TextInput
-                    multiline
-                    numberOfLines={4}
-                    style={styles.longInput}
-                    onChangeText={setDesc}
-                    value={desc}
-                />
-                <Text style={styles.label}>Calle</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setStreet}
-                    value={street}
-                />
-                <View style={styles.rowContainer}>
-                    <View style={styles.columnContainer}>
-                        <Text style={styles.label}>Número exterior</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setNumExt}
-                            value={numExt}
-                        />
-                    </View>
-                    <View style={styles.columnContainer}>
-                        <Text style={styles.label}>Número interior</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setNumInt}
-                            value={numInt}
-                        />
-                    </View>
-                </View>
-                <Text style={styles.label}>Colonia</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setColonia}
-                    value={colonia}
-                />
-                <View style={styles.rowContainer}>
-                    <View style={styles.columnContainer}>
-                        <Text style={styles.label}>Ciudad</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setCity}
-                            value={city}
-                        />
-                    </View>
-                    <View style={styles.columnContainer}>
-                        <Text style={styles.label}>Estado</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setState}
-                            value={state}
-                        />
-                    </View>
-                </View>
-                <View style={styles.rowContainer}>
-                    <View style={styles.columnContainer}>
-                        <Text style={styles.label}>Teléfono 1</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setPhone1}
-                            value={phone1}
-                        />
-                    </View>
-                    <View style={styles.columnContainer}>
-                        <Text style={styles.label}>Teléfono 2</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setPhone2}
-                            value={phone2}
-                        />
-                    </View>
-                </View>
 
-                <View style={styles.buttonContainer}>
-                    <Pressable
-                        onPress={() => {
-                            submitChanges()
-                        }}
-                        disabled={disableButton}
-                        style={styles.saveButton}
-                    >
-                        <Text
-                            style={styles.textButton}
-                        >Guardar cambios</Text>
-                    </Pressable>
-                </View>
-                
-            </View>}
+        <ScrollView>
+            {loaded &&
+                <View style={styles.container}>
+                    <Text style={styles.label}>Nombre del restaurante</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setName}
+                        value={name}
+                    />
+                    <Text style={styles.label}>Descripción</Text>
+                    <TextInput
+                        multiline
+                        numberOfLines={4}
+                        style={styles.longInput}
+                        onChangeText={setDesc}
+                        value={desc}
+                    />
+                    <Text style={styles.label}>Calle</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setStreet}
+                        value={street}
+                    />
+                    <View style={styles.rowContainer}>
+                        <View style={styles.columnContainer}>
+                            <Text style={styles.label}>Número exterior</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setNumExt}
+                                value={numExt}
+                            />
+                        </View>
+                        <View style={styles.columnContainer}>
+                            <Text style={styles.label}>Número interior</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setNumInt}
+                                value={numInt}
+                            />
+                        </View>
+                    </View>
+                    <Text style={styles.label}>Colonia</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setColonia}
+                        value={colonia}
+                    />
+                    <View style={styles.rowContainer}>
+                        <View style={styles.columnContainer}>
+                            <Text style={styles.label}>Ciudad</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setCity}
+                                value={city}
+                            />
+                        </View>
+                        <View style={styles.columnContainer}>
+                            <Text style={styles.label}>Estado</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setState}
+                                value={state}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.rowContainer}>
+                        <View style={styles.columnContainer}>
+                            <Text style={styles.label}>Teléfono 1</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setPhone1}
+                                value={phone1}
+                            />
+                        </View>
+                        <View style={styles.columnContainer}>
+                            <Text style={styles.label}>Teléfono 2</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setPhone2}
+                                value={phone2}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <Pressable
+                            onPress={() => {
+                                submitChanges()
+                            }}
+                            disabled={disableButton}
+                            style={styles.saveButton}
+                        >
+                            <Text
+                                style={styles.textButton}
+                            >Guardar cambios</Text>
+                        </Pressable>
+                    </View>
+
+                </View>}
         </ScrollView>
 
     );
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     textButton: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: "#fff" 
+        color: "#fff"
     }
 
 });

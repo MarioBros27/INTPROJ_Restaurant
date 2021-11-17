@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-export default function Restaurants({navigation}) {
-     return (
+export default function Restaurants({ navigation }) {
+    return (
 
         <View style={styles.container}>
-           
+
             <Text>Hello Restaurants</Text>
         </View>
 

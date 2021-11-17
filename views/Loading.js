@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         height: 200,
         resizeMode: 'contain'
     },
-    text:{
+    text: {
         fontSize: 30
     }
 });

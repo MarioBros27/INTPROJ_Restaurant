@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, Pressable, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Pressable } from 'react-native';
 import axios from 'axios';
 
 export default function Clientes({ navigation, id }) {
