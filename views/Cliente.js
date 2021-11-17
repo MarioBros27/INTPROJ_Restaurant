@@ -12,9 +12,7 @@ export default function Cliente({ route, navigation }) {
     } else {
         pagado = "No"
     }
-    let time = new Date(item.checkIn)
-    let hours = time.getHours()
-    let minutes = time.getMinutes()
+    let realDate = new Date(Date.parse(item.checkIn)).toString();
 
     const handleDone = () => {
         setDisableButton(true)
@@ -48,10 +46,8 @@ export default function Cliente({ route, navigation }) {
                     <View style={styles.nameContainer}>
                         <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
                         <Text style={styles.subtitle}>Número de mesa: {item.tableNumber}</Text>
-                        <Text style={styles.subtitle}>Hora de apertura: {
-                            `${hours}:${minutes}` 
-                        }</Text>
-                        <Text style={styles.subtitle}>Fecha de apertura: {item.checkIn.slice(0,10)}</Text>
+                        <Text style={styles.subtitle}>Hora de apertura: {realDate.slice(16,24)}</Text>
+                        <Text style={styles.subtitle}>Fecha de apertura: {realDate.slice(4,15)}</Text>
                     </View>
                     <View style={styles.totalContainer}>
                         <Text style={styles.total}>${item.total}</Text>
@@ -100,8 +96,7 @@ const styles = StyleSheet.create({
     },
 
     totalContainer: {
-        alignItems: 'flex-end',
-        marginRight: 15
+        alignItems: 'flex-end'
     },
 
     item: {
@@ -111,7 +106,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 15,
         marginTop: 10,
-        marginHorizontal: 15,
+        marginHorizontal: 10,
     },
 
     title: {

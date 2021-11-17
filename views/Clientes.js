@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList, View, Text, TouchableOpacity, Pressable } from 'react-native';
 import axios from 'axios';
 
 export default function Clientes({ navigation, id }) {
@@ -25,9 +25,7 @@ export default function Clientes({ navigation, id }) {
         });
     }, [])
     const Item = ({ item }) => {
-        let time = new Date(item.checkIn)
-        let hours = time.getHours()
-        let minutes = time.getMinutes()
+        let realDate = new Date(Date.parse(item.checkIn)).toString();
 
         return (
             <TouchableOpacity onPress={() => {
@@ -40,10 +38,8 @@ export default function Clientes({ navigation, id }) {
                         <View style={styles.nameContainer}>
                             <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
                             <Text style={styles.subtitle}>Número de mesa: {item.tableNumber}</Text>
-                            <Text style={styles.subtitle}>Hora de apertura: {
-                                `${hours}:${minutes}` 
-                            }</Text>
-                            <Text style={styles.subtitle}>Fecha de apertura: {item.checkIn.slice(0,10)}</Text>
+                            <Text style={styles.subtitle}>Hora de apertura: {realDate.slice(16,24)}</Text>
+                            <Text style={styles.subtitle}>Fecha de apertura: {realDate.slice(4, 15) }</Text>
                         </View>
                         <View style={styles.totalContainer}>
                             <Text style={styles.total}>${item.total}</Text>
@@ -101,8 +97,7 @@ const styles = StyleSheet.create({
     },
 
     totalContainer: {
-        alignItems: 'flex-end',
-        marginRight: 15
+        alignItems: 'flex-end'
     },
 
     item: {
@@ -110,9 +105,9 @@ const styles = StyleSheet.create({
         borderLeftWidth: 2,
         borderLeftColor: "#FC6238",
         backgroundColor: '#fff',
-        padding: 15,
+        padding: 12,
         marginVertical: 10,
-        marginHorizontal: 15,
+        marginHorizontal: 10,
     },
 
     buttonContainer: {
