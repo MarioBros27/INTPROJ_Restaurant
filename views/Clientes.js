@@ -1,38 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList, StatusBar, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, FlatList, Pressable, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-// const pagos = [
-//     {
-//         id: "1",
-//         nombre: "Mario Ruiz",
-//         mesa: "1",
-//         hora: "12:20",
-//         total: "420"
-//     },
-//     {
-//         id: "2",
-//         nombre: "Mario Sangre Lopez",
-//         hora: "12:20",
-//         mesa: "2",
-//         total: "0"
-//     },
-//     {
-//         id: "3",
-//         nombre: "Mario Lupo Marzo",
-//         hora: "12:20",
-//         mesa: "1",
-//         total: "920"
-//     },
-//     {
-//         id: "4",
-//         nombre: "Mario Mañana Viene Santa",
-//         hora: "12:20",
-//         mesa: "99",
-//         total: "420"
-//     },
-// ]
-
-
 
 export default function Clientes({ navigation, id }) {
 
@@ -44,17 +12,9 @@ export default function Clientes({ navigation, id }) {
         axios.get(`${appSettings['backend-host']}/bills?restaurantId=${id}`
         )
             .then(response => {
-                let cleanData = []
-                response.data.forEach(element => {
-                    if(!element.done){
-                        cleanData.push(element)
-                    }
-                });
-                
-                setData(cleanData)
+                setData(response.data)
             })
             .catch(error => {
-                // console.log(error)
                 alert(`There was an error fetching the clients. Error details: ${error}`)
             })
     }
@@ -76,13 +36,25 @@ export default function Clientes({ navigation, id }) {
                 })
             }}>
                 <View style={styles.item}>
-                    <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
-                    <Text style={styles.subtitle}>#Mesa: {item.tableNumber}</Text>
-                    <Text style={styles.subtitle}>{
-                        // item.checkIn.substr(11, 5)
-                        `${hours}:${minutes}`
-                    }</Text>
-                    <Text style={styles.subtitle}>Total: ${item.total}</Text>
+                    <View style={styles.rowContainer}>
+                        <View style={styles.nameContainer}>
+                            <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+                            <Text style={styles.subtitle}>Número de mesa: {item.tableNumber}</Text>
+                            <Text style={styles.subtitle}>Hora de apertura: {
+                                `${hours}:${minutes}` 
+                            }</Text>
+                            <Text style={styles.subtitle}>Fecha de apertura: {item.checkIn.slice(0,10)}</Text>
+                        </View>
+                        <View style={styles.totalContainer}>
+                            <Text style={styles.total}>${item.total}</Text>
+                            { item.done && 
+                                <Text style={styles.paidOrder}>Orden pagada</Text>
+                            }
+                            { !item.done &&
+                                <Text style={styles.unpaidOrder}>Orden no pagada</Text>
+                            }
+                        </View>
+                    </View>
                 </View>
             </TouchableOpacity>
         )
@@ -95,13 +67,14 @@ export default function Clientes({ navigation, id }) {
 
         <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
-                <Button
+                <Pressable
                     onPress={() => {
                         navigation.navigate("ClientNew")
                     }}
-                    title="Check In"
-                    color="#fc6c27"
-                />
+                    style={styles.addButton}
+                >
+                    <Text style={styles.textButton}>Crear orden virtual</Text>
+                </Pressable>
             </View>
             <FlatList
                 data={data}
@@ -116,27 +89,83 @@ export default function Clientes({ navigation, id }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
+
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    nameContainer: {
+        alignItems: 'flex-start'
+    },
+
+    totalContainer: {
+        alignItems: 'flex-end',
+        marginRight: 15
+    },
+
     item: {
+        borderRadius: 10,
+        borderLeftWidth: 2,
+        borderLeftColor: "#FC6238",
         backgroundColor: '#fff',
         padding: 15,
-        marginVertical: 8,
-        marginHorizontal: 16,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+        marginVertical: 10,
+        marginHorizontal: 15,
     },
+
     buttonContainer: {
-        marginBottom: 4
+        alignItems: 'flex-end',
     },
+
+    addButton: {
+        marginRight: 20,
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: "#FC6238",
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 50
+    },
+
+    textButton: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: "#fff" 
+    },
+
     title: {
         fontSize: 18,
         marginBottom: 2,
         fontWeight: "bold"
     },
+
     subtitle: {
         fontSize: 14
-    }
+    },
 
+    total: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: "#FC6238"
+    },
+    
+    paidOrder: {
+        padding: 5,
+        marginTop: 5,
+        borderRadius: 5,
+        backgroundColor: "#8DD7BF",
+        color: "#315e26"
+    },
+
+    unpaidOrder: {
+        padding: 5,
+        marginTop: 5,
+        borderRadius: 5,
+        backgroundColor: "#EFB3AB",
+        color: "#B04632"
+    }
 });
