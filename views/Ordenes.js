@@ -53,7 +53,7 @@ export default function Ordenes({ navigation, id }) {
                     }}>
                         <View style={styles.detailsContainer}>
                             
-                            <Text style={styles.detailsText}>Detalles</Text>
+                            <Text style={styles.detailsText}>Actualizar</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

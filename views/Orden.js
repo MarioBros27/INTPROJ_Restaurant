@@ -59,7 +59,7 @@ export default function Orden({ route, navigation, id }) {
                         }}
                         style={styles.pendingButton}
                     >
-                        <Text style={styles.buttonText}>Marcar como pendiente</Text>
+                        <Text style={[styles.buttonText, { color: '#FCD423' }]}>¡Pendiente!</Text>
                     </Pressable>
                 </View>
 
@@ -70,7 +70,7 @@ export default function Orden({ route, navigation, id }) {
                         }}
                         style={styles.attendedButton}
                     >
-                        <Text style={styles.buttonText}>Marcar como atendido</Text>
+                        <Text style={[styles.buttonText, { color: '#B77AEC' }]}>¡Atendido!</Text>
                     </Pressable>
                 </View>
             </View>
@@ -83,7 +83,7 @@ export default function Orden({ route, navigation, id }) {
                         }}
                         style={styles.cancelButton}
                     >
-                        <Text style={styles.buttonText}>Marcar como cancelada</Text>
+                        <Text style={[styles.buttonText, { color: '#FE7282' }]}>¡Cancelado!</Text>
                     </Pressable>
                 </View>
 
@@ -94,7 +94,7 @@ export default function Orden({ route, navigation, id }) {
                         }}
                         style={styles.deliveredButton}
                     >
-                        <Text style={styles.buttonText}>Marcar como entregado</Text>
+                        <Text style={[styles.buttonText, { color: '#8CC6AE' }]}>¡Entregado!</Text>
                     </Pressable>
                 </View>
             </View>
@@ -160,34 +160,46 @@ const styles = StyleSheet.create({
 
     pendingButton: {
         paddingHorizontal: 8,
+        width: '97%',
         paddingVertical: 5,
         borderRadius: 10,
-        backgroundColor: "#FCD423"
+        backgroundColor: "#fff",
+        borderWidth: 2,
+        borderColor: '#FCD423'
     },
 
     cancelButton: {
         paddingHorizontal: 8,
+        width: '97%',
         paddingVertical: 5,
         borderRadius: 10,
-        backgroundColor: "#FE7282"
+        backgroundColor: "#fff",
+        borderWidth: 2,
+        borderColor: "#FE7282"
     },
 
     attendedButton: {
         paddingHorizontal: 8,
+        width: '97%',
         paddingVertical: 5,
         borderRadius: 10,
-        backgroundColor: "#B77AEC"
+        backgroundColor: "#fff",
+        borderWidth: 2,
+        borderColor: "#B77AEC"
     },
 
     deliveredButton: {
         paddingHorizontal: 8,
+        width: '97%',
         paddingVertical: 5,
         borderRadius: 10,
-        backgroundColor: "#8CC6AE"
+        backgroundColor: "#fff",
+        borderWidth: 2,
+        borderColor: '#8CC6AE'
     },
 
     buttonText: {
-        fontSize: 14,
+        fontSize: 16,
         textAlign: 'center',
         fontWeight: 'bold',
         color: "#fff" 
