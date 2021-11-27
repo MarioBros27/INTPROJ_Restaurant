@@ -38,13 +38,17 @@ export default function Pagos({ navigation, id }) {
 
         return (
             <View style={styles.item}>
-                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
-                <Text style={styles.subtitle}>Mesa: {item.tableNumber}</Text>
-                <Text style={styles.subtitle}>Fecha de pago: {item.paymentTime.substr(0,10)}</Text>
-                <Text style={styles.subtitle}>Hora de pago: {hours}:{minutes}</Text>
-                <Text style={styles.subtitle}>Total: ${item.total}</Text>
-                <Text style={styles.subtitle}>Propina: ${item.tip}</Text>
-                <Text style={styles.subtitle}>Referencia: {item.paymentReference}</Text>
+                <View style={styles.rowContainer}>
+                    <View style={[styles.leftContainer, { width: '70%' }]}>
+                        <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+                        <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Número de mesa: </Text>{item.tableNumber}</Text>
+                        <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Fecha y hora: </Text>{new Date(Date.parse(item.paymentTime)).toString().slice(4,21)}</Text>
+                        <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Referencia: </Text>{item.paymentReference}</Text>
+                    </View>
+                    <View style={styles.rightContainer}>
+                        <Text style={styles.total}>${item.total}</Text>
+                    </View>
+                </View>
             </View>
         );
     }
@@ -69,25 +73,54 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+
     item: {
         backgroundColor: '#fff',
-        padding: 15,
-        marginVertical: 8,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 15,
+        borderLeftColor: '#a254eb',
+        borderLeftWidth: 3,
+        marginVertical: 6,
         marginHorizontal: 16,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+        borderRadius: 10
     },
-    buttonContainer: {
-        marginBottom: 4
+
+    breakLine: {
+        marginVertical: 3,
+        borderBottomColor: "#dedede",
+        borderBottomWidth: 1,
+        marginHorizontal: 8
     },
+
     title: {
         fontSize: 18,
-        marginBottom: 2,
+        marginBottom: 10,
         fontWeight: "bold"
     },
+
     subtitle: {
         fontSize: 14
-    }
+    },
+    
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 3
+    },
 
+    leftContainer: {
+        alignItems: 'flex-start',
+    },
+
+    rightContainer: {
+        alignItems: 'flex-end',
+        marginRight: 15
+    },
+
+    total: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: "#5e06aa"
+    },
 });
