@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 export default function ClientNew({ navigation, id }) {
 
-    const [name, setName] = React.useState("Escanea cliente")
+    const [name, setName] = React.useState("Escanea el código QR del cliente")
     const [customerId, setCustomerId] = React.useState("")
     const [table, setTable] = React.useState("0")
     const [hasPermission, setHasPermission] = React.useState(null);
@@ -69,35 +69,35 @@ export default function ClientNew({ navigation, id }) {
 
     if (hasPermission === false) {
         setName("NO tienes permiso para la camara")
-
     }
 
     return (
         <View style={styles.container}>
+            <Text style={styles.title}>{name}</Text>
             <BarCodeScanner
                 onBarCodeScanned={handleBarCodeScanned}
                 style={styles.qrScanner}
             />
-            <Text style={styles.title}>{name}</Text>
             <View style={styles.rowContainer}>
-                <Text style={styles.label}># Mesa</Text>
+                <Text style={styles.label}>Asigna un número de mesa</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setTable}
+                    placeholderTextColor={"#FFA23A"}
                     value={table}
                     keyboardType="numeric"
                 />
             </View>
             <View style={styles.buttonContainer}>
-                <Button
+                <Pressable
                     onPress={() => {
                         handlePost()
                     }}
-                    title="Check In"
-                    color="green"
+                    style={styles.addButton}
                     disabled={!fetched}
-                />
-
+                >
+                    <Text style={styles.textButton}>Generar nueva orden virtual</Text>
+                </Pressable>
             </View>
 
         </View>
@@ -106,16 +106,13 @@ export default function ClientNew({ navigation, id }) {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "column",
-        alignItems: 'center',
-        justifyContent: 'center',
         padding: 20
     },
     label: {
         fontWeight: "bold"
     },
     buttonContainer: {
-        marginTop: 50
+        alignItems: 'center'
     },
     qrScanner: {
         height: 200,
@@ -128,10 +125,9 @@ const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: "row",
         alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
-        fontSize: 18,
+        fontSize: 24,
         marginBottom: 2,
         fontWeight: "bold"
     },
@@ -140,11 +136,32 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        width: "20%",
+        width: "40%",
         margin: 12,
+        borderRadius: 10,
         borderWidth: 1,
+        borderColor: '#ffa23a',
         padding: 10,
+        color: '#ffa23a',
         backgroundColor: "#fff"
-    }
+    },
+    addButton: {
+        marginRight: 20,
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: "#FC6238",
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 50
+    },
+
+    textButton: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: "#fff",
+        textAlign: 'center'
+    },
 
 });
