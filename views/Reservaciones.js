@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, Button, TouchableOpacity, SectionList } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 
 import axios from 'axios';
 
@@ -16,35 +16,9 @@ export default function Reservaciones({ navigation, id }) {
         return false;
     };
     const fetchData = () => {
-        axios.get(`${appSettings['backend-host']}/reservations?restaurantId=${id}`
-        )
+        axios.get(`${appSettings['backend-host']}/reservations?restaurantId=${id}`)
             .then(response => {
-                const today = new Date();
-                let cleanAppointments = [{
-                    title: "Pendientes:",
-                    data: []
-                },
-                {
-                    title: "Aceptados:",
-                    data: []
-                },
-                {
-                    title: "Cancelados:",
-                    data: []
-                }]
-                response['data'].forEach((ele) => {
-                    const date = new Date(ele["appointment"])
-                    if (dateAcceptable(today, date)) {
-                        if (ele["status"] == "waiting") {
-                            cleanAppointments[0]["data"].push(ele)
-                        } else if (ele["status"] == "accepted") {
-                            cleanAppointments[1]["data"].push(ele)
-                        } else {
-                            cleanAppointments[2]["data"].push(ele)
-                        }
-                    }
-                })
-                setData(cleanAppointments)
+                setData(response.data)
             })
             .catch(error => {
                 alert(`There was an error fetching the reservations. Error details: ${error}`)
@@ -63,10 +37,24 @@ export default function Reservaciones({ navigation, id }) {
             })
         }}>
             <View style={styles.item}>
-                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
-                <Text style={styles.subtitle}>#Personas: {item.seats}</Text>
-                <Text style={styles.subtitle}>{item.appointment.substr(0, 10)}</Text>
-                <Text style={styles.subtitle}>{item.appointment.substr(11, 5)}</Text>
+                <View style={styles.rowContainer}>
+                    <View style={[styles.leftContainer, {width: '60%'}]}>
+                        <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>  
+                    </View>
+                    <View style={[styles.rightContainer, {width: '30%'}]}>
+                        { item.status == 'waiting' && 
+                            <Text style={styles.waitingReservation}>Pendiente</Text>
+                        }
+                        { item.status == 'canceled' && 
+                            <Text style={styles.cancelledReservation}>Cancelada</Text>    
+                        }
+                        { item.status == 'accepted' &&
+                            <Text style={styles.acceptedReservation}>Aceptada</Text>
+                        }
+                    </View>
+                </View>
+                <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Número de personas: </Text>{item.seats}</Text>
+                <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Fecha y hora: </Text>{new Date(Date.parse(item.appointment)).toString().slice(4,21)}</Text>
             </View>
         </TouchableOpacity>
 
@@ -80,23 +68,10 @@ export default function Reservaciones({ navigation, id }) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={() => {
-                        fetchData()
-                    }}
-                    title="Actualizar"
-                    color="green"
-                    accessibilityLabel="Actualizar"
-                />
-            </View>
-            <SectionList
-                sections={data}
-                keyExtractor={(item, index) => item + index}
+            <FlatList
+                data={data}
                 renderItem={renderItem}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                )}
+                keyExtractor={item => item.id}
             />
         </SafeAreaView>
 
@@ -104,34 +79,64 @@ export default function Reservaciones({ navigation, id }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     item: {
         backgroundColor: '#fff',
-        padding: 15,
-        marginVertical: 8,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 15,
+        borderLeftColor: '#00b4d8',
+        borderLeftWidth: 3,
+        marginTop: 15,
         marginHorizontal: 16,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+        borderRadius: 10
     },
-    buttonContainer: {
-        marginBottom: 4
+
+    waitingReservation: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#F8E473",
+        color: "#C49102"
     },
-    header: {
-        fontSize: 24,
-        marginBottom: 2,
-        fontWeight: "bold",
-        marginLeft: 20
+
+    cancelledReservation: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#FBA490",
+        color: "#B83253"
     },
+
+    acceptedReservation: {
+        padding: 5,
+        marginLeft: 5,
+        borderRadius: 5,
+        backgroundColor: "#9DD7BF",
+        color: "#315e26"
+    },
+
     title: {
         fontSize: 18,
-        marginBottom: 2,
+        marginBottom: 5,
         fontWeight: "bold"
     },
-    subtitle: {
-        fontSize: 16
-    }
 
+    subtitle: {
+        fontSize: 14
+    },
+    
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 3
+    },
+
+    leftContainer: {
+        alignItems: 'flex-start'
+    },
+
+    rightContainer: {
+        alignItems: 'flex-end',
+        marginRight: 15
+    }, 
 });
