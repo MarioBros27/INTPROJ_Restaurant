@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Alert } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 
 export default function Reservacion({ route, navigation }) {
@@ -36,39 +37,46 @@ export default function Reservacion({ route, navigation }) {
     }
     return (
 
-        <View style={styles.parentContainer}>
+        <View style={styles.container}>
 
-            <View style={styles.infoContainer}>
-                <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
-                <Text style={styles.subtitle}>#Personas: {item.seats}</Text>
-                <Text style={styles.subtitle}>{item.appointment.substr(0, 10)}</Text>
-                <Text style={styles.subtitle}>{item.appointment.substr(11, 5)}</Text>
+            <Text style={{ fontSize: 24, marginBottom: 10, fontWeight: "bold" }}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
+
+            <View style={styles.rowContainer}>
+                <MaterialIcons style={styles.icon} name="groups" color={"#6C88C4"} size={20} />
+                <Text style={styles.subtitle}>{item.seats} personas</Text>
             </View>
+
+            <View style={[styles.rowContainer, { marginBottom: 10 }]}>
+                <MaterialIcons style={styles.icon} name="event" color={"#6C88C4"} size={20} />
+                <Text style={styles.subtitle}>{new Date(Date.parse(item.appointment)).toString().slice(4,21)}</Text>
+            </View>
+
             {(item.status == "waiting" || item.status == "canceled") &&
                 <View style={styles.buttonContainer}>
-                    <Button
+                    <Pressable
                         onPress={() => {
                             editStatus("accepted")
                         }}
-                        title="Aceptar reservación"
-                        color="green"
                         accessibilityLabel="Aceptar reservación"
                         disabled={disableButton}
-                    />
-
+                        style={[styles.acceptButton, { width: '80%', marginBottom: 10 }]}
+                    >
+                        <Text style={styles.buttonText}>Aceptar</Text>
+                    </Pressable>
                 </View>
             }
             {item.status != "canceled" &&
                 <View style={styles.buttonContainer}>
-                    <Button
+                    <Pressable
                         onPress={() => {
                             cancelAlert()
                         }}
-                        title="Cancelar reservación"
-                        color="red"
                         accessibilityLabel="Cancelar reservación"
                         disabled={disableButton}
-                    />
+                        style={[styles.cancelButton, { width: '80%' }]}
+                    >
+                        <Text style={styles.buttonText}>Cancelar</Text>
+                    </Pressable>
 
                 </View>
             }
@@ -78,28 +86,67 @@ export default function Reservacion({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    parentContainer: {
-        // flex: 1,
-        flexDirection: "column",
-        padding: 20
+    container: {
+        flex: 1,
+        paddingVertical: 10,
+        paddingHorizontal: 20
     },
-    infoContainer: {
-        backgroundColor: '#fff',
-        padding: 15,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 22
+    
+    rowContainer: {
+        flexDirection: 'row',
+        marginBottom: 3,
     },
-    buttonContainer: {
-        marginTop: 25
+    
+    leftContainer: {
+        alignItems: 'flex-start'
     },
-    title: {
-        fontSize: 24,
-        marginBottom: 2,
-        fontWeight: "bold"
+    
+    rightContainer: {
+        alignItems: 'flex-end'
+    }, 
+    
+    icon: {
+        marginRight: 5,
+        marginTop: 2
+    }, 
+    
+    item: {
+        paddingBottom: 5,
+        marginVertical: 5,
+        marginLeft: 15,
+        borderBottomWidth: 1,
+        borderColor: "#ccc",
     },
-    subtitle: {
-        fontSize: 22
-    }
 
+    subtitle: {
+        fontSize: 18,
+        marginBottom: 2,
+    },
+
+    buttonContainer: {
+        alignItems: 'center'
+    },
+
+    acceptButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 10,
+        borderRadius: 10,
+        width: '100%',
+        backgroundColor: '#4DD091'
+    },
+
+    cancelButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 10,
+        borderRadius: 10,
+        width: '100%',
+        backgroundColor: '#FC6238'
+    },
+
+    buttonText: {
+        textAlign: 'center',
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: "#fff"
+    }
 });
