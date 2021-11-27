@@ -37,9 +37,9 @@ export default function Clientes({ navigation, id }) {
                     <View style={styles.rowContainer}>
                         <View style={styles.nameContainer}>
                             <Text style={styles.title}>{`${item["Customer"]["firstName"]} ${item["Customer"]["lastName"]}`}</Text>
-                            <Text style={styles.subtitle}>Número de mesa: {item.tableNumber}</Text>
-                            <Text style={styles.subtitle}>Hora de apertura: {realDate.slice(16,24)}</Text>
-                            <Text style={styles.subtitle}>Fecha de apertura: {realDate.slice(4, 15) }</Text>
+                            <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Número de mesa: </Text>{item.tableNumber}</Text>
+                            <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Fecha de apertura: </Text>{realDate.slice(4, 15) }</Text>
+                            <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Hora de apertura: </Text>{realDate.slice(16,24)}</Text>
                         </View>
                         <View style={styles.totalContainer}>
                             <Text style={styles.total}>${item.total}</Text>
