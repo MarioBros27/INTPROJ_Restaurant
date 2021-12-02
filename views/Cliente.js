@@ -39,6 +39,15 @@ export default function Cliente({ route, navigation }) {
 
         ]);
     }
+    const calculateTotal = () => {
+        let total = 0;
+    
+        item.Items.forEach(item => {
+            total = total + (item.price * item.ItemBill.quantity)
+        })
+        
+        return total
+    }
     return (
         <>
             <View style={styles.item}>
@@ -50,7 +59,7 @@ export default function Cliente({ route, navigation }) {
                         <Text style={styles.subtitle}>Fecha de apertura: {realDate.slice(4,15)}</Text>
                     </View>
                     <View style={styles.totalContainer}>
-                        <Text style={styles.total}>${item.total}</Text>
+                        <Text style={styles.total}>${calculateTotal()}</Text>
                         { item.done && 
                             <Text style={styles.paidOrder}>Orden pagada</Text>
                         }

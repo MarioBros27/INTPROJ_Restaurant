@@ -6,7 +6,7 @@ import axios from 'axios';
 export default function Clientes({ navigation, id }) {
 
     const [data, setData] = useState([])
-    const [ refresh, setRefresh ] = useState([]);
+    const [ refresh, setRefresh ] = useState(false);
     const appSettings = require('../app-settings.json');
 
 
@@ -27,6 +27,16 @@ export default function Clientes({ navigation, id }) {
         });
     }, [refresh])
     const Item = ({ item }) => {
+        const calculateTotal = () => {
+            let total = 0;
+        
+            item.Items.forEach(item => {
+                total = total + (item.price * item.ItemBill.quantity)
+            })
+            
+            return total
+        }
+
         let realDate = new Date(Date.parse(item.checkIn)).toString();
 
         return (
@@ -44,7 +54,7 @@ export default function Clientes({ navigation, id }) {
                             <Text style={styles.subtitle}><Text style={{ fontWeight: 'bold' }}>Hora de apertura: </Text>{realDate.slice(16,24)}</Text>
                         </View>
                         <View style={styles.totalContainer}>
-                            <Text style={styles.total}>${item.total}</Text>
+                            <Text style={styles.total}>${ calculateTotal() }</Text>
                             { item.done && 
                                 <Text style={styles.paidOrder}>Orden pagada</Text>
                             }
