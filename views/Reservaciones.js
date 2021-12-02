@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function Reservaciones({ navigation, id }) {
     const [data, setData] = useState([])
-    const [ refresh, setRefresh ] = useState([]);
+    const [ refresh, setRefresh ] = useState(false);
     const appSettings = require('../app-settings.json');
 
     const dateAcceptable = function (firstDate, secondDate) {
