@@ -34,7 +34,7 @@ export default function RestMenu({ navigation, id }) {
         }}>
             <View style={styles.item}>
                 <View style={styles.rowContainer}>
-                    <View style={styles.titleContainer}>
+                    <View style={[styles.titleContainer, { width: '70%' }]}>
                         <Text style={styles.title}>{item.name}</Text>
                         <Text style={styles.subtitle}>{item.description}</Text>
                     </View>

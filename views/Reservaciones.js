@@ -1,11 +1,13 @@
-import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, SafeAreaView, Pressable, TouchableOpacity, FlatList } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import axios from 'axios';
 
 
 export default function Reservaciones({ navigation, id }) {
-    const [data, setData] = React.useState([])
+    const [data, setData] = useState([])
+    const [ refresh, setRefresh ] = useState([]);
     const appSettings = require('../app-settings.json');
 
     const dateAcceptable = function (firstDate, secondDate) {
@@ -24,12 +26,12 @@ export default function Reservaciones({ navigation, id }) {
                 alert(`There was an error fetching the reservations. Error details: ${error}`)
             })
     }
-    React.useEffect(() => {
+    useEffect(() => {
         fetchData()
         const willFocusSubscription = navigation.addListener('focus', () => {
             fetchData();
         });
-    }, [])
+    }, [refresh])
     const Item = ({ item }) => (
         <TouchableOpacity onPress={() => {
             navigation.navigate("Reservacion", {
@@ -66,8 +68,15 @@ export default function Reservaciones({ navigation, id }) {
         );
     }
     return (
-
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
+            <View style={{ marginTop: 15, marginRight: 15, alignItems: 'flex-end'}}>
+                <Pressable
+                    style={{ padding: 10, backgroundColor: '#00b0ba', borderRadius: 100}}
+                    onPress={() => setRefresh(!refresh)}
+                >
+                    <MaterialIcons style={{color: '#fff'}} name="refresh" color={"#00CDAC"} size={20} />
+                </Pressable>
+            </View>
             <FlatList
                 data={data}
                 renderItem={renderItem}
