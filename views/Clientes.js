@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, FlatList, View, Text, TouchableOpacity, Pressable } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 
 export default function Clientes({ navigation, id }) {
 
-    const [data, setData] = React.useState([])
+    const [data, setData] = useState([])
+    const [ refresh, setRefresh ] = useState([]);
     const appSettings = require('../app-settings.json');
 
 
@@ -18,12 +20,12 @@ export default function Clientes({ navigation, id }) {
                 alert(`There was an error fetching the clients. Error details: ${error}`)
             })
     }
-    React.useEffect(() => {
+    useEffect(() => {
         fetchData()
         const willFocusSubscription = navigation.addListener('focus', () => {
             fetchData();
         });
-    }, [])
+    }, [refresh])
     const Item = ({ item }) => {
         let realDate = new Date(Date.parse(item.checkIn)).toString();
 
@@ -60,17 +62,24 @@ export default function Clientes({ navigation, id }) {
         <Item item={item} />
     );
     return (
-
         <SafeAreaView style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <Pressable
-                    onPress={() => {
-                        navigation.navigate("ClientNew")
-                    }}
-                    style={styles.addButton}
-                >
-                    <Text style={styles.textButton}>Crear orden virtual</Text>
-                </Pressable>
+            <View style={{alignItems: 'flex-end'}}>
+                <View style={styles.buttonContainer}>
+                    <Pressable
+                        onPress={() => {
+                            navigation.navigate("ClientNew")
+                        }}
+                        style={styles.addButton}
+                    >
+                        <Text style={styles.textButton}>Crear orden virtual</Text>
+                    </Pressable>
+                    <Pressable
+                        style={{ marginBottom: 10, marginRight: 10, padding: 10, backgroundColor: '#00b0ba', borderRadius: 100}}
+                        onPress={() => setRefresh(!refresh)}
+                    >
+                        <MaterialIcons style={{color: '#fff'}} name="refresh" color={"#00CDAC"} size={20} />
+                    </Pressable>
+                </View>
             </View>
             <FlatList
                 data={data}
@@ -111,7 +120,8 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        alignItems: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'flex-end'
     },
 
     addButton: {
