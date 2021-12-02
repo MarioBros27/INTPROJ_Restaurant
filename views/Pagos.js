@@ -1,10 +1,12 @@
-import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, SafeAreaView, Pressable, FlatList } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 
 export default function Pagos({ navigation, id }) {
 
-    const [data, setData] = React.useState([])
+    const [data, setData] = useState([])
+    const [ refresh, setRefresh ] = useState(false);
     const appSettings = require('../app-settings.json');
 
 
@@ -25,9 +27,9 @@ export default function Pagos({ navigation, id }) {
                 alert(`There was an error fetching the payments. Error details: ${error}`)
             })
     }
-    React.useEffect(() => {
+    useEffect(() => {
         fetchData()
-    }, [])
+    }, [refresh])
     const Item = ({ item }) => {
         let time = new Date(item.paymentTime)
         let hours = time.getHours()
@@ -57,8 +59,15 @@ export default function Pagos({ navigation, id }) {
         <Item item={item} />
     );
     return (
-
         <SafeAreaView style={styles.container}>
+            <View style={{ marginTop: 15, marginRight: 15, alignItems: 'flex-end'}}>
+                <Pressable
+                    style={{ padding: 10, backgroundColor: '#00b0ba', borderRadius: 100}}
+                    onPress={() => setRefresh(!refresh)}
+                >
+                    <MaterialIcons style={{color: '#fff'}} name="refresh" color={"#00CDAC"} size={20} />
+                </Pressable>
+            </View>
             <FlatList
                 data={data}
                 renderItem={renderItem}
